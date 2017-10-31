@@ -12,9 +12,8 @@
     "spa",
     "web"
   ],
-  "main": "index.js",
   "bin": {
-    "sspaf": "./indexjs"
+    "sspaf": "indexjs"
   },
   "devDependencies": {
     "commander": "^2.11.0",
