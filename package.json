@@ -2,7 +2,7 @@
   "name": "sspaf",
   "description": "Simple Single Page Application Framework",
   "author": "Gabriel Forti <gnforti@gmail.com>",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "keywords": [
     "app",
     "api",
