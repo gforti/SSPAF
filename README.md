@@ -19,6 +19,11 @@ Generate the app by running `sspaf` followed by the folder name of your choice:
 $ sspaf foo
 ```
 
+> Do not forget to enter the folder that was just created
+
+```bash
+$ cd foo
+```
 
 ### Project Start Guide
 
