@@ -51,11 +51,11 @@ This file is the core of the SPA.  It's the director and manages the page.  Noth
 - Simple hash navigation
 - Query Param handling
 - Two way binding
-- Auto Form two way binding with changes made
+- Auto Form two way binding when changes are made
 - Http calls
 - Event Listener binding
 - Loading Screen
-- Promise based implemenation
+- Promise based
 - Modern use of JavaScript (es6+)
 
 
