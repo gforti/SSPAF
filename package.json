@@ -15,7 +15,7 @@
   "bin": {
     "sspaf": "index.js"
   },
-  "devDependencies": {
+  "dependencies": {
     "commander": "^2.11.0",
     "custom-template-generator": "^0.1.1"
   }

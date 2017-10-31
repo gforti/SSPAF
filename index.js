@@ -5,11 +5,7 @@ program
   .arguments('<file>')
   .parse(process.argv);
 
-
 var destinationPath = program.args.shift() || '.';
-
-console.log(destinationPath)
-
 
 generator({
     componentName: destinationPath,
