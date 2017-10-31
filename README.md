@@ -2,6 +2,46 @@
 
 The idea here is to create a single page app with modern JavaScript.  This is not a full featured framework.  There is no security and is intended for school, sample projects or quick prototypes.
 
+
+## Installation
+
+```sh
+$ npm install -g sspaf
+```
+
+## Quick Start
+
+Generate the app by running `sspaf` followed by the folder name of your choice:
+
+```bash
+$ sspaf foo
+```
+
+
+### Project Start Guide
+
+> Make sure to run the command that will install the dependencies
+
+```bash
+$ npm install
+```
+
+Now we can start the server with the following command to begin development
+
+```bash
+$ npm start
+```
+
+All changes made in `app_client` will picked up and update the `spa.min.js` file.
+
+> Run `spa.html` as it's own page
+
+> Netbeans is a free IDE that will allow you to run the file with a built-in local server
+
+
+
+# Documentation
+
 ## spa.js
 
 This file is the core of the SPA.  It's the director and manages the page.  Nothing needs to be updated or added unless you would like to add or fix the functionality.

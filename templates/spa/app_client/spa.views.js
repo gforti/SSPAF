@@ -7,8 +7,13 @@ class View {
         return html
     }  
     
+    get todo() { 
+        return `<h1>Todo Fetch List</h1>
+                <div data-bindText="todoList"></div>`
+    }
+    
     get test() { 
-        return 'test'
+        return `test`
     }
   
 }

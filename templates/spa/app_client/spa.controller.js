@@ -12,4 +12,8 @@ class Controller {
         return Promise.resolve()
     }
     
+    todo(){
+        return this.Model.getTodo()
+    }
+    
 }

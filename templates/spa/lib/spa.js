@@ -14,7 +14,10 @@ class SPA {
             document.body.id = page            
             this.controller[page]()
                 .then( ()=> { this.renderContent(this.view[page]).bindModelText().parseEvents().twoWayFormBind().loadingEnd() })
-                .catch( err => this.renderContent('<p>There was an error with the request</p>').loadingEnd() )
+                .catch( err => {
+                    this.renderContent('<p>There was an error with the request</p>').loadingEnd()
+                    console.error(err)
+                })
         })
 
         if ( !window.location.hash && typeof route === 'string') {

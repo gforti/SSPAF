@@ -3,7 +3,7 @@ class Model extends BaseModel {
     constructor() {
        super()
        this.APIS = {
-           Reviews : 'http://localhost:3001/api/v1/reviews/'
+           Todo : 'public/todo.json'
        }       
    }
 
@@ -12,6 +12,13 @@ class Model extends BaseModel {
        this.dataBind.msg = msg
        this.dataBind.msgReverse = Components.reverseSring(msg)
        return Promise.resolve()
+   }
+   
+   getTodo(){
+       return this.http.get(this.APIS.Todo)
+              .then( data => {
+                   return this.dataBind.todoList = Components.todoList(data) 
+               })  
    }
 
   

@@ -1,0 +1,26 @@
+{
+  "name": "sspaf",
+  "description": "Simple Single Page Application Framework",
+  "author": "Gabriel Forti <gnforti@gmail.com>",
+  "version": "0.0.0",
+  "keywords": [
+    "app",
+    "api",    
+    "framework",
+    "javascript",
+    "js",    
+    "spa",
+    "web"
+  ],
+  "main": "index.js",
+  "bin": {
+    "sspaf": "./indexjs"
+  },
+  "scripts": {
+    "start": "node index.js foo"
+  },
+  "devDependencies": {
+    "commander": "^2.11.0",
+    "custom-template-generator": "^0.1.1"
+  }
+}
