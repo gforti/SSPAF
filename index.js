@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var generator = require('custom-template-generator');
 var program = require('commander');
 

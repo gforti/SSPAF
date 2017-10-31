@@ -12,6 +12,7 @@
     "spa",
     "web"
   ],
+  "repository": "gforti/sspaf",
   "bin": {
     "sspaf": "index.js"
   },
