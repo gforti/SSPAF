@@ -2,13 +2,13 @@
   "name": "sspaf",
   "description": "Simple Single Page Application Framework",
   "author": "Gabriel Forti <gnforti@gmail.com>",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "keywords": [
     "app",
-    "api",    
+    "api",
     "framework",
     "javascript",
-    "js",    
+    "js",
     "spa",
     "web"
   ],
