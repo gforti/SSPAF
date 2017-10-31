@@ -11,30 +11,30 @@ class SPA {
             this.loadingStart()
             this.model.dataBind = {}
             let page = `${window.location.hash.slice(1).split('?')[0]}`
-            console.log(page)
+            document.body.id = page            
             this.controller[page]()
-                .then(()=>{
-                    this.renderContent(this.view[page]).bindModelText().parseEvents().twoWayFormBind()
-                    this.loadingEnd()
-                })
+                .then( ()=> { this.renderContent(this.view[page]).bindModelText().parseEvents().twoWayFormBind().loadingEnd() })
+                .catch( err => this.renderContent('<p>There was an error with the request</p>').loadingEnd() )
         })
 
-        if (typeof route === 'string') {
-            window.location.hash = route
+        if ( !window.location.hash && typeof route === 'string') {
+            window.location.hash = route            
         }
+        window.dispatchEvent(new HashChangeEvent('hashchange'))
+       
     }
 
     loadingStart() {
-        this.loading.add('visable')
+        this.loading.add('visible')
         return this
     }
 
     loadingEnd() {
-        this.loading.remove('visable')
+        this.loading.remove('visible')
         return this
     }
 
-    renderContent(html) {
+    renderContent(html) {       
         this.content.innerHTML = html
         return this
     }
@@ -99,8 +99,7 @@ class SPA {
                         }
                     },
                     configurable: true
-                });
-
+                })
 
             })
         }
