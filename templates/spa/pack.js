@@ -1,4 +1,7 @@
+var connect = require('connect');
 var fs = require('fs');
+var open = require("open");
+var serveStatic = require('serve-static');
 var uglifyJs = require("uglify-es");
 var watch = require('node-watch');
 
@@ -32,3 +35,8 @@ function pack(evt, name) {
     });
 
 }
+
+connect().use(serveStatic(__dirname)).listen(3000, function(){
+    console.log('Server running on http://localhost:3000/');
+    open('http://localhost:3000/');
+});

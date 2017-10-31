@@ -8,7 +8,7 @@ class Components {
         return `<ol class="list">
                     ${data.map(row=>                                         
                     `<li>
-                        <input type="checkbox" id="check-${row.id}" ${row.completed ? checked="checked" : ''}">
+                        <input type="checkbox" id="check-${row.id}" ${row.completed ? 'checked="checked"' : ''}">
                         <label for="check-${row.id}">${row.title}</label>
                     </li>`
                 ).join('')}
