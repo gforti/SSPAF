@@ -3,6 +3,7 @@
   "description": "Simple Single Page Application Framework",
   "author": "Gabriel Forti <gnforti@gmail.com>",
   "version": "0.0.9",
+  "license": "MIT",
   "keywords": [
     "app",
     "api",
@@ -18,6 +19,7 @@
   },
   "dependencies": {
     "commander": "^2.11.0",
-    "custom-template-generator": "^0.1.1"
+    "graceful-copy": "^1.1.0",
+    "inquirer": "^3.3.0"
   }
 }
