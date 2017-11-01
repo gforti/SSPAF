@@ -90,8 +90,8 @@ class SPA {
                     else if ('innerHTML' in domElem) domElem.innerHTML = val
                 } 
                 Object.defineProperty(obj, property, {
-                    get: function() { return val }, 
-                    set: function(newValue) { 
+                    get: () => { return val }, 
+                    set: (newValue) => { 
                         let elems = document.querySelectorAll(selector)
                         val = newValue
                         if (elems) {
