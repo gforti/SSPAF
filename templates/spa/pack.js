@@ -31,6 +31,7 @@ function pack(evt, name) {
             console.log(err)
         } else {
             console.log("Script generated and saved:", 'spa.min.js')
+            console.log("Refresh the page")
         }
     })
 }
