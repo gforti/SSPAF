@@ -21,7 +21,7 @@ class BaseModel {
    }
 
 
-   httpFetch(url, data, verb){                    
+   httpFetch(url, data, verb) {                    
        let myHeaders = new Headers()
        myHeaders.set('Content-Type', 'application/json')
        let myInit = { method: verb, headers: myHeaders, mode: 'cors', cache: 'default'}                    
@@ -36,8 +36,13 @@ class BaseModel {
                })                            
    }
    
-   urlParams(){
+   urlParams() {
        return new URLSearchParams(window.location.search)
+   }
+   
+   generateUrlParams(params = {}) {
+       const esc = encodeURIComponent
+       return `?${Object.keys(params).map(k => `${esc(k)}=${esc(params[k])}`).join('&')}`
    }
 
 }
