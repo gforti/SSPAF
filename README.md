@@ -114,6 +114,24 @@ updatePage(evt){
 }
 ```
 
+To bind all form fields just add the `data-bindall` attribute to the form tag
+
+All fields with a `name` attribute will auto bind the name as the key with the changed value to the `model.bindData` object
+
+Currently only `input` and `select` fields are supported
+
+> Other fields can easily be supported by updating the `lib/spa.js` file; function `bindModelText()` selectors
+
+```html
+    <form data-bindall>
+        <input type="text" name="reviewText" />
+    </form>
+```
+
+```js
+    model.bindData.reviewText // this value is available by the data-bindall attribute
+```
+
 
 ## spa.components.js
 
@@ -158,7 +176,9 @@ getReviews() {
 ## spa.model.js
 
 The Model is where all your business logic should be. Functions that will be executed from `data-event`s or values that will be binded 
-with this.bindData are to be handled within the `Model class`.
+with `this.bindData` are to be handled within the `Model class`.
+
+> Note the `this.bindData` object resets after a new page is loaded
 
 The Model comes with code to store API endpoints, the bindData object, http calls with fetch, and support for url params
 

@@ -8,6 +8,10 @@ class Controller {
         return this.Model.getHomeMessage()
     }
     
+    form() {
+        return Promise.resolve()
+    }
+    
     test() {
         return Promise.resolve()
     }
