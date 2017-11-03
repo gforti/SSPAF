@@ -39,7 +39,7 @@ Now we can start the server with the following command to begin development
 $ npm start
 ```
 
-All changes made in `app_client` will picked up and update the `spa.min.js` file.
+All changes made in `app_client` will picked up and update to the `spa.min.js` file.
 
 > `index.html` will run a on `http://localhost:3000/`
 
@@ -71,6 +71,13 @@ The hash name must match the view name.
 
 > location `#test` must have `test() { return html }`
 
+
+### Adding Links
+
+Be sure to update the nav links on `index.html` for global navigation
+
+### Bind HTML
+
 You can add the `data-bindText` attribute to an tag to inject html from the model.
 
 The value of the custom attribute will be tied to the `model.bindData` object
@@ -78,10 +85,14 @@ The value of the custom attribute will be tied to the `model.bindData` object
 ```html
 <p data-bindText="reviews"></p>
 ```
+
 Inside of `spa.model.js`
+
 ```js
 this.bindData.reviews = `<strong>Hello World</strong>`
 ```
+
+### DOM Events
 
 Events can also be binded to html tags with the custom attribute `data-event` like so
 
@@ -99,26 +110,29 @@ The first value is the event followed by the function to be called from the `Mod
 
 Must be a supported event in JavaScript. The function cannot pass any custom paramters but does pass the event object.
 
-You can access the event to get the target.
+You can access the event object to get a the target DOM Element.
 
 ```html
 <button data-id="${row._id}" data-event="click:updatePage">Update</button>
 ```
 
 In the `spa.model.js` file you can write the event like so
+
 ```js
 updatePage(evt){       
-    const params = `?id=${evt.target.dataset.id}`       
-    window.location.href =  `${params}#update` 
+    const params = this.generateUrlParams({id: evt.target.dataset.id})
+    window.location.href = `${params}#update` 
     return Promise.resolve()
 }
 ```
+
+### Auto Bind Form Data on change
 
 To bind all form fields just add the `data-bindall` attribute to the form tag
 
 All fields with a `name` attribute will auto bind the name as the key with the changed value to the `model.bindData` object
 
-Currently only `input` and `select` fields are supported
+Currently only `input`, `select` and `textarea` fields are supported
 
 > Other fields can easily be supported by updating the `lib/spa.js` file; function `bindModelText()` selectors
 
@@ -136,17 +150,18 @@ Currently only `input` and `select` fields are supported
 ## spa.components.js
 
 This file is to place component views that are injected after the page is loaded.
+
 > All functions should be `static`
 
 Data can be passed and processed to return the html for the view.  To be properly injected you must update the `bindData` from the `Model class`
 and also bind the text into the html view.
 
-`spa.views.js`
+**spa.views.js**
 ```html
 <tbody data-bindtext="reviewTable"></tbody>
 ```
 
-`spa.components.js`
+**spa.components.js**
 ```js
 static resultsData(data){
     if ( ! Array.isArray(data) ) return ''
@@ -162,7 +177,7 @@ static resultsData(data){
 }
 ```
 
-`spa.model.js`
+**spa.model.js**
 ```js
 getReviews() {
     return this.http.get(this.APIS.Reviews)
@@ -180,9 +195,80 @@ with `this.bindData` are to be handled within the `Model class`.
 
 > Note the `this.bindData` object resets after a new page is loaded
 
-The Model comes with code to store API endpoints, the bindData object, http calls with fetch, and support for url params
+The Base Model comes with code to store API endpoints, the bindData object, http calls with fetch, and support for url params
 
-Here are some samples on how to create functions.
+### Fetch calls
+
+All Fetch calls return the data as a JSON object.  The data passed in must be a json object.  It will be converted to a payload
+for a backend service.
+
+**Payload Data**
+```js
+ const data = {
+    author : this.dataBind.author,
+    rating : this.dataBind.rating,
+    reviewText : this.dataBind.reviewText
+ }
+```
+**Functions available**
+- this.http.get(url)
+- this.http.post(url, data)
+- this.http.put(url, data)
+- this.http.delete(url)
+
+### Endpoints
+
+You can add a list of endpoints or json files to the variable `this.APIS`.  Since the endpints are normally static
+they can be added in the constructor function of `spa.model.js`
+
+```js
+ constructor() {
+        super()
+        this.APIS = {
+            Reviews : 'http://localhost:3001/api/v1/reviews/',
+            Todo : 'public/todo.json'
+        }
+    }
+```
+
+### URL Query(Search) Params
+
+Search params are known to be ?id=123 that is added to the url. 
+Use the function `this.urlParams` to get a JS standard `new URLSearchParams()` object
+
+For more info: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+
+To build query/search params use the function `this.generateUrlParams(params = {})`.  
+The function takes in a json object of key value pairs.
+
+```js
+const params = this.generateUrlParams({id: '123'})
+```
+
+> Note that the nav links that are on the `index.html` page have the query/search params removed on each view update.
+
+
+### Here are some samples on how to create functions.
+
+> You can chain your promise functions by returning a value. 
+
+> Add a `.then()` after a catch to act as a `try, catch, finally`
+
+```js
+    deleteReview(evt) {
+       const url = `${this.APIS.Reviews}${evt.target.dataset.id}`
+       return this.http.delete(url)
+               .then( ()=>{
+                   return this.dataBind.deleteResultMsg = 'Review Deleted'                                
+               }).catch( err => {
+                    return this.dataBind.deleteResultMsg = 'Review NOT Deleted'                                 
+               }).then( () => {
+                   return this.getReviews()
+               })
+   }
+```
+
+**Crud**
 
 ```js
     getReviews() {
@@ -226,8 +312,8 @@ Here are some samples on how to create functions.
    }
    
    updatePage(evt){       
-       const params = `?id=${evt.target.dataset.id}`       
-       window.location.href =  `${params}#update` 
+       const params = this.generateUrlParams({id: evt.target.dataset.id})
+       window.location.href = `${params}#update`  
        return Promise.resolve()
    }
    
