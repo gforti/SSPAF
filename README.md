@@ -2,8 +2,9 @@
 
 ## Simple Single Page Application Framework
 
-The idea here is to create a single page app with modern JavaScript.  This is not a full featured framework.  There is no security and is intended for school, sample projects or quick prototypes.
+The idea here is to create a single page app with modern JavaScript.  This is not a full featured framework but is a front end framework.  There is no security and is intended for school, sample projects or quick prototypes.
 
+> Note this framework will only work on modern browsers
 
 ## Installation
 
@@ -41,7 +42,7 @@ $ npm start
 
 All changes made in `app_client` will picked up and update to the `spa.min.js` file.
 
-> `index.html` will run a on `http://localhost:3000/`
+> `index.html` will run on `http://localhost:3000/`
 
 
 # Documentation
@@ -78,7 +79,7 @@ Be sure to update the nav links on `index.html` for global navigation
 
 ### Bind HTML
 
-You can add the `data-bindText` attribute to an tag to inject html from the model.
+You can add the `data-bindText` attribute to a tag to inject html from the model.
 
 The value of the custom attribute will be tied to the `model.bindData` object
 
@@ -134,16 +135,16 @@ All fields with a `name` attribute will auto bind the name as the key with the c
 
 Currently only `input`, `select` and `textarea` fields are supported
 
-> Other fields can easily be supported by updating the `lib/spa.js` file; function `bindModelText()` selectors
+> Other fields can easily be supported by updating the `lib/spa.js` file; function `bindModelText()` selectors and update `twoWayFormBind()` target.matches
 
 ```html
-    <form data-bindall>
-        <input type="text" name="reviewText" />
-    </form>
+<form data-bindall>
+    <input type="text" name="reviewText" />
+</form>
 ```
 
 ```js
-    model.bindData.reviewText // this value is available by the data-bindall attribute
+model.bindData.reviewText // this value is available by the data-bindall attribute
 ```
 
 
@@ -195,7 +196,7 @@ with `this.bindData` are to be handled within the `Model class`.
 
 > Note the `this.bindData` object resets after a new page is loaded
 
-The Base Model comes with code to store API endpoints, the bindData object, http calls with fetch, and support for url params
+The Base Model comes with code to store API endpoints, the bindData object, http calls with fetch, and support for url query/search params
 
 ### Fetch calls
 
@@ -204,11 +205,11 @@ for a backend service.
 
 **Payload Data**
 ```js
- const data = {
+const data = {
     author : this.dataBind.author,
     rating : this.dataBind.rating,
     reviewText : this.dataBind.reviewText
- }
+}
 ```
 **Functions available**
 - this.http.get(url)
@@ -222,21 +223,26 @@ You can add a list of endpoints or json files to the variable `this.APIS`.  Sinc
 they can be added in the constructor function of `spa.model.js`
 
 ```js
- constructor() {
-        super()
-        this.APIS = {
-            Reviews : 'http://localhost:3001/api/v1/reviews/',
-            Todo : 'public/todo.json'
-        }
+constructor() {
+    super()
+    this.APIS = {
+        Reviews : 'http://localhost:3001/api/v1/reviews/',
+        Todo : 'public/todo.json'
     }
+}
 ```
 
 ### URL Query(Search) Params
 
+
 Search params are known to be ?id=123 that is added to the url. 
 Use the function `this.urlParams` to get a JS standard `new URLSearchParams()` object
 
+```js
+this.urlParams().get('id')
+```
 For more info: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+
 
 To build query/search params use the function `this.generateUrlParams(params = {})`.  
 The function takes in a json object of key value pairs.
@@ -255,17 +261,17 @@ const params = this.generateUrlParams({id: '123'})
 > Add a `.then()` after a catch to act as a `try, catch, finally`
 
 ```js
-    deleteReview(evt) {
-       const url = `${this.APIS.Reviews}${evt.target.dataset.id}`
-       return this.http.delete(url)
-               .then( ()=>{
-                   return this.dataBind.deleteResultMsg = 'Review Deleted'                                
-               }).catch( err => {
-                    return this.dataBind.deleteResultMsg = 'Review NOT Deleted'                                 
-               }).then( () => {
-                   return this.getReviews()
-               })
-   }
+deleteReview(evt) {
+    const url = `${this.APIS.Reviews}${evt.target.dataset.id}`
+    return this.http.delete(url)
+           .then( ()=>{
+               return this.dataBind.deleteResultMsg = 'Review Deleted'                                
+           }).catch( err => {
+                return this.dataBind.deleteResultMsg = 'Review NOT Deleted'                                 
+           }).then( () => {
+               return this.getReviews()
+           })
+}
 ```
 
 **Crud**
