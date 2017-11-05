@@ -93,6 +93,12 @@ Inside of `spa.model.js`
 this.bindData.reviews = `<strong>Hello World</strong>`
 ```
 
+If you would like to do a safe bind just include the attribute `data-safe` along with the `data-bindText` attribute 
+
+```html
+<p data-bindText="reviews" data-safe></p>
+```
+
 ### DOM Events
 
 Events can also be binded to html tags with the custom attribute `data-event` like so
