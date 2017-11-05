@@ -232,6 +232,14 @@ constructor() {
 }
 ```
 
+I recommend if you want to resolve a url with different ports on localhost to use this method instead.
+
+```js
+this.APIS = {
+    Reviews : `//${window.location.hostname}:3001/api/v1/reviews/`
+}
+```
+
 ### URL Query(Search) Params
 
 
