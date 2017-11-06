@@ -407,6 +407,8 @@ Any files added to the `mixins` folder of the project will be packed within `spa
 This should allow for drop n use functionality.  With the above example we are extending the Model class.
 The redirect function will be available within the Model class
 
+> Mixins may become a point of conflict if they overwrite native class methods
+
 ```js
 this.redirect('home')
 ```
