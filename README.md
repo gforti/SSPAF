@@ -428,3 +428,9 @@ updatePage(evt){
     return Promise.resolve()
 }
 ```
+
+> If you want to skip a default paramater in JS just pass `undefined` in its place
+
+```js
+    this.redirect(undefined,{id: evt.target.dataset.id})
+``` 
