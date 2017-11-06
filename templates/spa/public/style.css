@@ -1,28 +1,28 @@
  /* Absolute Center Spinner */
 .loading {
-  position: fixed;
-  z-index: 999;
-  height: 2em;
-  width: 2em;
-  overflow: hidden;
-  margin: auto;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  visibility: hidden;
+    bottom: 0;
+    height: 2em;
+    left: 0;
+    margin: auto;
+    overflow: hidden;
+    position: fixed;
+    right: 0;
+    top: 0;
+    visibility: hidden;
+    width: 2em;
+    z-index: 999;
 }
 
 /* Transparent Overlay */
 .loading:before {
-  content: '';
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.3);
+    background-color: rgba(0,0,0,0.3);
+    content: '';
+    display: block;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;  
+    width: 100%;
 }
 
 .visible {
@@ -49,11 +49,25 @@ body#safe{
     padding: 0.8rem;
 }
 
-.list li:nth-child(odd){
+.list li:nth-child(odd) {
     background: rgba(0,0,50,.1);
 }
 
-input[type="checkbox"]:checked + label{
-    text-decoration: line-through;
+input[type="checkbox"]:checked + label {
     color: rgba(0,0,0,.3);
+    text-decoration: line-through;    
+}
+
+body#home > nav > a[href$="home"],
+body#form > nav > a[href$="form"],
+body#test > nav > a[href$="test"],
+body#todo > nav > a[href$="todo"],
+body#safe > nav > a[href$="safe"]
+{
+    background-color: #292929;
+    border-color: transparent;
+    color: whitesmoke;
+    padding: 0.2em 0.5em;
+    text-align: center;
+    text-decoration: none;
 }

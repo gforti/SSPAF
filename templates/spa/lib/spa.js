@@ -53,7 +53,7 @@ class SPA {
     cleanNavLinks() {
         let links = document.querySelector('nav').querySelectorAll('a')
         links.forEach(link => {
-            link.setAttribute('href', `${link.origin}${link.hash}`)
+            link.setAttribute('href', `${window.location.origin}${link.hash}`)
         })
         return this
     }

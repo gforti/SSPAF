@@ -46,7 +46,7 @@ class View {
                 <p> Safe Text: <span data-bindtext="test" data-safe></span></p>
                 <p> NOT Safe Text: <span data-bindtext="test"></span></p>
                 <p> Safe HTML Input: <br /> <textarea data-bindText="test" data-safe></textarea></p>
-                <p> Safe HTML Input: <br /> <textarea data-bindText="test"></textarea></p>
+                <p> Not Safe HTML Input: <br /> <textarea data-bindText="test"></textarea></p>
                 `
     }
 

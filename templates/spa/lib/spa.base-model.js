@@ -43,8 +43,7 @@ class BaseModel {
     }
 
     generateUrlParams(params = {}) {
-        const esc = encodeURIComponent
-        return `?${Object.keys(params).map(k => `${esc(k)}=${esc(params[k])}`).join('&')}`
+        return `?${Object.keys(params).map(k => [k, params[k]].map(window.encodeURIComponent).join('=')).join('&')}`
     }
 
     urlParams() {

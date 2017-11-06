@@ -387,3 +387,44 @@ add() {
 ``` 
 
 > A `promise` must be returned
+
+## Mixins
+
+You can extend the functionality of this framework. 
+
+ To add a function to the framework prototype you can simply do the following:
+
+```js
+Object.assign(BaseModel.prototype, {
+    redirect(route = window.location.hash.slice(1).split('?')[0], params = {}) {
+        const query = this.generateUrlParams(params)
+        window.location.assign(`${query}#${route}`)
+    }
+})
+```
+
+Any files added to the `mixins` folder of the project will be packed within `spa.min.js`
+This should allow for drop n use functionality.  With the above example we are extending the Model class.
+The redirect function will be available within the Model class
+
+```js
+this.redirect('home')
+```
+
+so this updatePage function:
+
+```js
+updatePage(evt){
+    const params = this.generateUrlParams({id: evt.target.dataset.id})
+    window.location.href = `${params}#update`
+    return Promise.resolve()
+}
+```
+
+can be rewritten like so
+```js
+updatePage(evt){
+    this.redirect('update',{id: evt.target.dataset.id})
+    return Promise.resolve()
+}
+```
