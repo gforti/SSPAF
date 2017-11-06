@@ -117,7 +117,7 @@ The first value is the event followed by the function to be called from the `Mod
 
 Must be a supported event in JavaScript. The function cannot pass any custom paramters but does pass the event object.
 
-You can access the event object to get a the target DOM Element.
+You can access the event object to get the target DOM Element.
 
 ```html
 <button data-id="${row._id}" data-event="click:updatePage">Update</button>
