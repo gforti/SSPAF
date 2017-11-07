@@ -36,7 +36,8 @@ Use these commands for more template options
 $ sspaf --help
 ```
 
-|Option|Short Command| Full Command |
+| Option | Short Command | Full Command |
+| ------ | ------ | ------ |
 | Base Template | -b | --base |
 | Crud Template | -c | --crud |
 | Full Demo Template | -d | --demo |
