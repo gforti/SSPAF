@@ -28,29 +28,34 @@ $ cd foo
 
 ### Quick Start Options
 
-The command `$ sspaf <file_name>` will generate the basic files needed to get started.
+The command `$ sspaf <file_name>` will generate the base files needed to get started.
 
-Use these commands for more template options
+> If no file name is entered it will just generate the files in the current folder
+
+Use this command for more template options
 
 ```sh
 $ sspaf --help
 ```
 
-| Option | Short Command | Full Command |
-| ------ | ------ | ------ |
-| Base Template | -b | --base |
-| Crud Template | -c | --crud |
-| Full Demo Template | -d | --demo |
+| Option | Short Command | Full Command | Uses |
+| ------ | ------ | ------ | ------ |
+| Base Template | -b | --base | Base code no implementation |
+| Crud Template | -c | --crud | Crud base code with no endpoint |
+| Crud with json server Template | -j | --json | Crud with json server module/ Working endpoint |
+| Full Demo Template | -d | --demo | Code with highlighted features and examples |
 
 > The base template is the default option
 
-To use a command like so
+To use a command just enter 
 
 ```sh
 $ sspaf -d foo
 ```
 
 ### Project Start Guide
+
+Once generated you can quickly begin development with the steps below.
 
 > Make sure to run the command that will install the dependencies
 
