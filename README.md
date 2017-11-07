@@ -26,6 +26,29 @@ $ sspaf foo
 $ cd foo
 ```
 
+### Quick Start Options
+
+The command `$ sspaf <file_name>` will generate the basic files needed to get started.
+
+Use these commands for more template options
+
+```sh
+$ sspaf --help
+```
+
+|Option|Short Command| Full Command |
+| Base Template | -b | --base |
+| Crud Template | -c | --crud |
+| Full Demo Template | -d | --demo |
+
+> The base template is the default option
+
+To use a command like so
+
+```sh
+$ sspaf -d foo
+```
+
 ### Project Start Guide
 
 > Make sure to run the command that will install the dependencies
