@@ -28,18 +28,3 @@
 .visible {
     visibility: visible;
 }
-
-body#home {
-    background-color: coral;
-}
-
-body#home > nav > a[href$="home"],
-body#add > nav > a[href$="add"]
-{
-    background-color: #292929;
-    border-color: transparent;
-    color: whitesmoke;
-    padding: 0.2em 0.5em;
-    text-align: center;
-    text-decoration: none;
-}

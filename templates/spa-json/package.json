@@ -7,11 +7,14 @@
     "json": "json-server -p 3001 --watch db.json"
   },
   "devDependencies": {
-    "connect": "^3.6.5",
-    "json-server": "^0.12.1",
+    "connect": "^3.6.5",    
     "node-watch": "^0.5.5",
     "open": "0.0.5",
     "serve-static": "^1.13.1",
     "uglify-es": "^3.1.5"
+  },
+  "dependencies": {
+    "json-server": "^0.12.1",
+    "bulma": "^0.6.1"
   }
 }

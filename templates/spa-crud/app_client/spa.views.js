@@ -9,6 +9,7 @@ class View {
                       <th>Title</th>
                       <th>Completed</th>
                       <th></th>
+                      <th></th>
                   </thead>
                   <tbody data-bindtext="todoTable"></tbody>
               </table>`

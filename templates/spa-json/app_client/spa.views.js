@@ -1,21 +1,32 @@
 class View {
 
     get home() {
-        return `<h1>Todo Crud Sample</h1>
+        return `<section class="hero is-info is-small">
+                    <div class="hero-body">
+                        <h1 class="title">Todo Crud Sample</h1>
+                    </div>
+                </section>
                 <p data-bindtext="deleteResultMsg"></p>
-                <table>
+                <table class="table is-bordered">
                   <thead>
-                      <th>ID</th>
-                      <th>Title</th>
-                      <th>Completed</th>
-                      <th></th>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Completed</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
                   </thead>
                   <tbody data-bindtext="todoTable"></tbody>
               </table>`
     }
     
      get add() {                    
-        return `<h1> Add New Todo </h1>
+        return `<section class="hero is-info is-small">
+                    <div class="hero-body">
+                        <h1 class="title">Add New Todo</h1>
+                    </div>
+                </section>
                 <form data-bindall>
                     <p>
                         <label>Title</label>
@@ -34,7 +45,11 @@ class View {
     }
     
     get update() { 
-        return `<h1> Update </h1>
+        return `<section class="hero is-info is-small">
+                    <div class="hero-body">
+                        <h1 class="title">Update Todo ID <span data-bindtext="id" class="has-text-warning"></span></h1>
+                    </div>
+                </section>
                 <form data-bindall>                    
                     <p>
                         <label>Title</label>
