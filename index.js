@@ -8,14 +8,16 @@ var program = require('commander')
 program
   .usage('[options] <file>')
   .option('-b, --base', 'Base Template')
-  .option('-c, --crud', 'Crud Template')
+  .option('-c, --crud', 'Crud Template')  
   .option('-d, --demo', 'Full Demo')
+  .option('-j, --json', 'Crud with json server Template')
   .parse(process.argv)
 
 var template = 'spa'
 
 if (program.crud) template = 'spa-crud'
-if (program.demo) template = 'spa-demo'
+else if (program.json) template = 'spa-json'
+else if (program.demo) template = 'spa-demo'
 
 const folderName = program.args.shift() || '.'
 const templatesPath = path.join(__dirname, 'templates', template)

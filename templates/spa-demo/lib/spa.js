@@ -94,16 +94,14 @@ class SPA {
                 const selector = `*[data-bindText="${property}"], input[name="${property}"], select[name="${property}"], textarea[name="${property}"]`
                 let val, safeVal
                 const useSafeHTML = domElem.hasAttribute('data-safe')
-                if (obj[property]) {
+                if (obj.hasOwnProperty(property) && obj[property] !== undefined) {
                     val = obj[property]
                     safeVal = this.Model.escapeHTML(val)
                     if ('value' in domElem) domElem.value = useSafeHTML ? safeVal : val
                     else if ('innerHTML' in domElem) domElem.innerHTML = useSafeHTML ? safeVal : val
                 }
                 Object.defineProperty(obj, property, {
-                    get: () => {
-                        return val
-                    },
+                    get: () => { return val },
                     set: (newValue) => {
                         let elems = document.querySelectorAll(selector)
                         val = newValue

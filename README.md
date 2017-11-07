@@ -42,7 +42,7 @@ $ sspaf --help
 | ------ | ------ | ------ | ------ |
 | Base Template | -b | --base | Base code no implementation |
 | Crud Template | -c | --crud | Crud base code with no endpoint |
-| Crud with json server Template | -j | --json | Crud with json server module/ Working endpoint |
+| Crud with json server Template | -j | --json | Crud base code with json server module(Working endpoint) |
 | Full Demo Template | -d | --demo | Code with highlighted features and examples |
 
 > The base template is the default option
@@ -275,6 +275,8 @@ this.APIS = {
 }
 ```
 
+> Don't forget to use the back-tick instead of the single quote
+
 ### URL Query(Search) Params
 
 
@@ -463,5 +465,5 @@ updatePage(evt){
 > If you want to skip a default paramater in JS just pass `undefined` in its place
 
 ```js
-    this.redirect(undefined,{id: evt.target.dataset.id})
+this.redirect(undefined,{id: evt.target.dataset.id})
 ``` 

@@ -16,6 +16,11 @@ All changes made in `app_client` will picked up and update the `spa.min.js` file
 
 > `index.html` will run a on `http://localhost:3000/`
 
+### JSON Server
+
+JSON server will be running on `http://localhost:3001/todo`
+
+> File used for the endpoint is `db.json`
 
 ### Testing localhost on your mobile device
 

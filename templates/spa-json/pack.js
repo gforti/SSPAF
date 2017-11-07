@@ -49,7 +49,9 @@ function pack(evt, name) {
     })
 }
 
-connect().use(serveStatic(__dirname)).listen(3000, '0.0.0.0', () => {
-    console.log('Server running on http://localhost:3000/')
-    open('http://localhost:3000/')
-})
+setTimeout(() => {
+    connect().use(serveStatic(__dirname)).listen(3000, '0.0.0.0', () => {
+        console.log('Server running on http://localhost:3000/')
+        open('http://localhost:3000/')
+    })
+}, 1000)

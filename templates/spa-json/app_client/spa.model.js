@@ -3,7 +3,7 @@ class Model extends BaseModel {
     constructor() {
         super()  
         this.APIS = {
-            Todo : 'public/todo.json'
+            Todo : `//${window.location.hostname}:3001/todo/`
         }
     }
     
