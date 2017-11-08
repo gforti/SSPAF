@@ -128,6 +128,28 @@ If you would like to do a safe bind just include the attribute `data-safe` along
 <p data-bindText="reviews" data-safe></p>
 ```
 
+### Display State (data-spadisplay)
+
+when you bind HTML to a DOM element it will manage a custom attribute called `data-spadisplay`.
+This gives you the flexibility to decide how empty DOM elements waiting for a value should be displayed
+
+This attribute can be managed by css to either always display or use the `visibility: hidden` | `display: none` properties.
+
+The default css used in `public/style.css`
+
+```css
+*[data-spadisplay=hidden] {    
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+    visibility: hidden;
+}
+*[data-spadisplay=visible] {    
+    opacity: 1;
+    transition: opacity 0.3s, visibility 0.3s;
+    visibility: visible;
+}
+```
+
 ### DOM Events
 
 Events can also be binded to html tags with the custom attribute `data-event` like so
