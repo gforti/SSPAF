@@ -101,8 +101,8 @@ class SPA {
                     else if ('innerHTML' in domElem) domElem.innerHTML = useSafeHTML ? safeVal : val
                 }
                 if (domElem.dataset.bindtext)
-                    if (!domElem.innerHTML.length) domElem.style.visibility = 'hidden'
-                    else domElem.style.visibility = 'visible'
+                    if (!domElem.innerHTML.length) domElem.dataset.spadisplay = 'hidden'
+                    else domElem.dataset.spadisplay = 'visible'
                 Object.defineProperty(obj, property, {
                     get: () => { return val },
                     set: (newValue) => {
@@ -114,8 +114,8 @@ class SPA {
                                 if ('value' in elem) elem.value = useSafeHTML ? safeVal : val
                                 else if ('innerHTML' in elem) elem.innerHTML = useSafeHTML ? safeVal : val
                                 if (elem.dataset.bindtext)
-                                    if (!elem.innerHTML.length) elem.style.visibility = 'hidden'
-                                    else elem.style.visibility = 'visible' 
+                                    if (!elem.innerHTML.length) elem.dataset.spadisplay = 'hidden'
+                                    else elem.dataset.spadisplay = 'visible' 
                             })
                         }
                     },
