@@ -27,19 +27,25 @@ class Model extends BaseModel {
     
     }
     
-    saveTodo() {
+    saveTodo(evt) {
+        
+        let form = evt.target.form        
+        if (!form.checkValidity()) {
+            this.dataBind.saveResultMsg = 'All fields are required'
+            return Promise.resolve()
+        }
         const data = {
            title : this.dataBind.title,
            completed : this.dataBind.completed
-       }                    
-       return this.http.post(this.APIS.Todo, data)
+        }                    
+        return this.http.post(this.APIS.Todo, data)
                 .then( data => {
                    this.dataBind.saveResultMsg = 'Todo Saved'
                    return data
                 }).catch( err => {
                    this.dataBind.saveResultMsg = 'Todo was NOT Saved'   
                    return err
-                })     
+                })  
     }
     
     goToUpdatePage(evt) {
@@ -57,7 +63,12 @@ class Model extends BaseModel {
         })       
    }
    
-   updateTodo() {
+   updateTodo(evt) {
+       let form = evt.target.form        
+        if (!form.checkValidity()) {
+            this.dataBind.updateResultMsg = 'All fields are required'
+            return Promise.resolve()
+        }
        const data = {
            title : this.dataBind.title,
            completed : this.dataBind.completed

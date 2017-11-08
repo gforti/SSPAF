@@ -1,8 +1,8 @@
 class SPA {
 
     constructor(route) {
-        this.content = document.querySelector('div.content')
-        this.loading = document.querySelector('div.loading').classList
+        this.content = document.querySelector('div.spa-content')
+        this.loading = document.querySelector('div.spa-loading').classList
         this.Model = new Model()
         this.view = new View()
         this.controller = new Controller(this.Model)
@@ -100,6 +100,9 @@ class SPA {
                     if ('value' in domElem) domElem.value = useSafeHTML ? safeVal : val
                     else if ('innerHTML' in domElem) domElem.innerHTML = useSafeHTML ? safeVal : val
                 }
+                if (domElem.dataset.bindtext)
+                    if (!domElem.innerHTML.length) domElem.style.visibility = 'hidden'
+                    else domElem.style.visibility = 'visible'
                 Object.defineProperty(obj, property, {
                     get: () => { return val },
                     set: (newValue) => {
@@ -110,6 +113,9 @@ class SPA {
                             elems.forEach(elem => {
                                 if ('value' in elem) elem.value = useSafeHTML ? safeVal : val
                                 else if ('innerHTML' in elem) elem.innerHTML = useSafeHTML ? safeVal : val
+                                if (elem.dataset.bindtext)
+                                    if (!elem.innerHTML.length) elem.style.visibility = 'hidden'
+                                    else elem.style.visibility = 'visible' 
                             })
                         }
                     },

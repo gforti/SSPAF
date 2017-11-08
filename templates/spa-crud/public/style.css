@@ -1,5 +1,5 @@
  /* Absolute Center Spinner */
-.loading {
+.spa-loading {
     bottom: 0;
     height: 2em;
     left: 0;
@@ -14,7 +14,7 @@
 }
 
 /* Transparent Overlay */
-.loading:before {
+.spa-loading:before {
     background-color: rgba(0,0,0,0.3);
     content: '';
     display: block;

@@ -1,5 +1,5 @@
  /* Absolute Center Spinner */
-.loading {
+.spa-loading {
     bottom: 0;
     height: 2em;
     left: 0;
@@ -14,7 +14,7 @@
 }
 
 /* Transparent Overlay */
-.loading:before {
+.spa-loading:before {
     background-color: rgba(0,0,0,0.3);
     content: '';
     display: block;
@@ -27,4 +27,26 @@
 
 .visible {
     visibility: visible;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.spacer {
+    margin-bottom: 1rem;
+}
+
+input:invalid, 
+select:invalid
+textarea:invalid
+{
+  border: 1px solid red;
+}
+
+input:valid, 
+select:valid
+textarea:valid
+{
+  border: 1px solid green;
 }
