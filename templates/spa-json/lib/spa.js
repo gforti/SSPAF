@@ -14,13 +14,15 @@ class SPA {
             document.body.id = page
             this.controller[page]()
                     .then(() => {
-                        this.renderContent(this.view[page]).bindModelText().parseEvents().twoWayFormBind().loadingEnd().cleanNavLinks()
+                        return this.renderContent(this.view[page])
+                    })
+                    .then(() => {
+                      this.bindModelText().parseEvents().twoWayFormBind().cleanNavLinks().loadingEnd()  
                     })
                     .catch(err => {
                         console.error(err)
-                        this.renderContent(this.Model.escapeHTML(err)).loadingEnd().cleanNavLinks()
+                        this.renderContent(this.Model.escapeHTML(err)).cleanNavLinks().loadingEnd()
                     })
-            window.location.href.replace(window.location.search, '');
         })
 
         if (!window.location.hash && typeof route === 'string') {
@@ -36,12 +38,15 @@ class SPA {
 
     loadingEnd() {
         this.loading.remove('visible')
+        window.dispatchEvent(new CustomEvent('sparouteload'))
         return this
     }
 
-    renderContent(html) {
-        this.content.innerHTML = html
-        return this
+    renderContent(page) {
+        page.then( html => {
+            this.content.innerHTML = html
+            return this
+        })        
     }
 
     update(evt, funcName) {
@@ -100,7 +105,7 @@ class SPA {
                     if ('value' in domElem) domElem.value = useSafeHTML ? safeVal : val
                     else if ('innerHTML' in domElem) domElem.innerHTML = useSafeHTML ? safeVal : val
                 }
-                if (domElem.dataset.bindtext)
+                if (!domElem.matches('input, select, textarea') && domElem.dataset.bindtext)
                     if (!domElem.innerHTML.length) domElem.dataset.spadisplay = 'hidden'
                     else domElem.dataset.spadisplay = 'visible'
                 Object.defineProperty(obj, property, {
@@ -113,7 +118,7 @@ class SPA {
                             elems.forEach(elem => {
                                 if ('value' in elem) elem.value = useSafeHTML ? safeVal : val
                                 else if ('innerHTML' in elem) elem.innerHTML = useSafeHTML ? safeVal : val
-                                if (elem.dataset.bindtext)
+                                if (!elem.matches('input, select, textarea') && elem.dataset.bindtext)
                                     if (!elem.innerHTML.length) elem.dataset.spadisplay = 'hidden'
                                     else elem.dataset.spadisplay = 'visible' 
                             })
