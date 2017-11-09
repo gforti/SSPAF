@@ -92,7 +92,7 @@ class Model extends BaseModel {
    
    updateReview(evt){
        console.log(this.dataBind)
-       //this.dataBind.reviews = this.dataBind.reviews2;
+       this.dataBind.reviews3 = this.dataBind.reviews;
        
    }
 

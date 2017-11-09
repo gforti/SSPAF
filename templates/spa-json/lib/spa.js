@@ -6,10 +6,8 @@ class SPA {
         this.Model = new Model()
         this.view = new View()
         this.controller = new Controller(this.Model)
-        
-        
 
-        window.addEventListener('hashchange', () => {
+        window.addEventListener('popstate', () => {
             this.loadingStart()
             this.Model.dataBind = {}
             let page = `${window.location.hash.slice(1).split('?')[0]}`
@@ -19,7 +17,7 @@ class SPA {
                         return this.renderContent(this.view[page])
                     })
                     .then(() => {
-                      this.bindModelText().parseEvents().twoWayFormBind().cleanNavLinks().loadingEnd()  
+                      this.bindModelText().parseEvents().twoWayInputBind().cleanNavLinks().loadingEnd()  
                     })
                     .catch(err => {
                         console.error(err)
@@ -40,7 +38,7 @@ class SPA {
 
     loadingEnd() {
         this.loading.remove('visible')
-        window.dispatchEvent(new CustomEvent('sparouteload'))
+        window.dispatchEvent(new CustomEvent('spaRouteReady'))
         return this
     }
 
@@ -53,7 +51,7 @@ class SPA {
 
     update(evt, funcName) {
         this.Model[funcName](evt).then(() => {
-            this.bindModelText().parseEvents().twoWayFormBind()
+            this.bindModelText().parseEvents().twoWayInputBind()
         })
     }
 
@@ -77,18 +75,20 @@ class SPA {
         return this
     }
 
-    twoWayFormBind() {
-        let form = this.content.querySelector('form[data-bindall]')
-        if (form) {
-            form.addEventListener('input', (event) => {
-                const target = event.target
-                const property = target.name
-                if (property && target.matches('input, select, textarea')) {
-                    this.Model.dataBind[property] = target.value
-                }
-            })
-            delete form.dataset.bindall
-        }
+    twoWayInputBind() {
+        let inputs = this.content.querySelectorAll('input[name], select[name], textarea[name]')
+        inputs.forEach(domElem => {
+            if(!domElem.dataset.hasOwnProperty('bindEnabled')) {
+                domElem.dataset.bindEnabled = 'true'
+                domElem.addEventListener('input', (evt) => {
+                    const target = evt.target
+                    const property = target.name
+                    if (!target.dataset.hasOwnProperty('bindIgnore')) {
+                        this.Model.dataBind[property] = target.value
+                    }
+                })
+            }
+        })
         return this
     }
 
@@ -108,8 +108,8 @@ class SPA {
                     else if ('innerHTML' in domElem) domElem.innerHTML = useSafeHTML ? safeVal : val
                 }
                 if (!domElem.matches('input, select, textarea') && domElem.dataset.bindtext)
-                    if (!domElem.innerHTML.length) domElem.dataset.spadisplay = 'hidden'
-                    else domElem.dataset.spadisplay = 'visible'
+                    if (!domElem.innerHTML.length) domElem.dataset.bindDisplay = 'hidden'
+                    else domElem.dataset.bindDisplay = 'visible'
                 Object.defineProperty(obj, property, {
                     get: () => { return val },
                     set: (newValue) => {
@@ -121,8 +121,8 @@ class SPA {
                                 if ('value' in elem) elem.value = useSafeHTML ? safeVal : val
                                 else if ('innerHTML' in elem) elem.innerHTML = useSafeHTML ? safeVal : val
                                 if (!elem.matches('input, select, textarea') && elem.dataset.bindtext)
-                                    if (!elem.innerHTML.length) elem.dataset.spadisplay = 'hidden'
-                                    else elem.dataset.spadisplay = 'visible' 
+                                    if (!elem.innerHTML.length) elem.dataset.bindDisplay = 'hidden'
+                                    else elem.dataset.bindDisplay = 'visible' 
                             })
                         }
                     },

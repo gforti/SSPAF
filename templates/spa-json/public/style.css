@@ -29,16 +29,18 @@
     visibility: visible;    
 }
 
-*[data-spadisplay=hidden] {    
+
+*[data-bind-display=hidden] {    
     opacity: 0;
     transition: opacity 0.3s, visibility 0.3s;
     visibility: hidden;
 }
-*[data-spadisplay=visible] {    
+*[data-bind-display=visible] {    
     opacity: 1;
     transition: opacity 0.3s, visibility 0.3s;
     visibility: visible;
 }
+
 
 .table td {
     vertical-align: middle;
