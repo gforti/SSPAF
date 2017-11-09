@@ -91,9 +91,9 @@ class Model extends BaseModel {
    }
    
    updateReview(evt){
-       console.log(this.dataBind)
+       console.log(evt.target.dataBind)
        this.dataBind.reviews3 = this.dataBind.reviews;
-       
+       return Promise.resolve()
    }
 
 }

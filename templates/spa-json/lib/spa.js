@@ -76,38 +76,41 @@ class SPA {
     }
 
     twoWayInputBind() {
-        let inputs = this.content.querySelectorAll('input[name], select[name], textarea[name]')
-        inputs.forEach(domElem => {
-            if(!domElem.dataset.hasOwnProperty('bindEnabled')) {
-                domElem.dataset.bindEnabled = 'true'
-                domElem.addEventListener('input', (evt) => {
-                    const target = evt.target
-                    const property = target.name
-                    if (!target.dataset.hasOwnProperty('bindIgnore')) {
-                        this.Model.dataBind[property] = target.value
-                    }
+        let inputs = [].slice.call(this.content.querySelectorAll('input, select, textarea'))
+        if (inputs)
+            inputs
+                .filter( field => (!field.dataset.hasOwnProperty('bindEnabled') || !field.dataset.hasOwnProperty('bindIgnore'))
+                                    && (field.name || field.dataset.hasOwnProperty('bindModel')) )
+                .forEach(domElem => {            
+                    domElem.dataset.bindEnabled = 'true'
+                    domElem.addEventListener('input', (evt) => {
+                        const target = evt.target
+                        const property = target.name || target.dataset.bindModel
+                        this.Model.dataBind[property] = target.value                    
+                    })            
                 })
-            }
-        })
         return this
     }
 
     bindModelText() {
-        let contents = this.content.querySelectorAll('*[data-bindtext], input[name], select[name], textarea[name]')
+        let contents = this.content.querySelectorAll('*[data-bind-model], input, select, textarea')
         const obj = this.Model.dataBind
         if (contents) {
             contents.forEach(domElem => {
-                const property = domElem.name || domElem.dataset.bindtext
-                const selector = `*[data-bindText="${property}"], input[name="${property}"], select[name="${property}"], textarea[name="${property}"]`
+                const property = domElem.name || domElem.dataset.bindModel
+                if ( !domElem.dataset.hasOwnProperty('bindModel'))
+                    domElem.dataset.bindModel = property
+                const selector = `*[data-bind-model="${property}"]`
                 let val, safeVal
                 const useSafeHTML = domElem.hasAttribute('data-safe')
+                
                 if (obj.hasOwnProperty(property) && obj[property] !== undefined) {
                     val = obj[property]
                     safeVal = this.Model.escapeHTML(val)
                     if ('value' in domElem) domElem.value = useSafeHTML ? safeVal : val
                     else if ('innerHTML' in domElem) domElem.innerHTML = useSafeHTML ? safeVal : val
                 }
-                if (!domElem.matches('input, select, textarea') && domElem.dataset.bindtext)
+                if (!domElem.matches('input, select, textarea') && domElem.dataset.bindModel)
                     if (!domElem.innerHTML.length) domElem.dataset.bindDisplay = 'hidden'
                     else domElem.dataset.bindDisplay = 'visible'
                 Object.defineProperty(obj, property, {
@@ -116,11 +119,13 @@ class SPA {
                         let elems = document.querySelectorAll(selector)
                         val = newValue
                         safeVal = this.Model.escapeHTML(val)
+                        console.log('setter')
+                        console.log(elems)
                         if (elems) {
                             elems.forEach(elem => {
                                 if ('value' in elem) elem.value = useSafeHTML ? safeVal : val
                                 else if ('innerHTML' in elem) elem.innerHTML = useSafeHTML ? safeVal : val
-                                if (!elem.matches('input, select, textarea') && elem.dataset.bindtext)
+                                if (!elem.matches('input, select, textarea') && elem.dataset.bindModel)
                                     if (!elem.innerHTML.length) elem.dataset.bindDisplay = 'hidden'
                                     else elem.dataset.bindDisplay = 'visible' 
                             })

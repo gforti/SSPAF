@@ -76,25 +76,5 @@ class View {
      get test() {
         return this.fetchHTML('public/templates/test2.html')
     } 
-    /*
-    get test() {
-        return Promise.resolve(`
-        <h1>Test</h1>
-        <form data-bindAll>
-           <p data-bindText="reviews"></p>
-           <input type="text" name="reviews"/>
-        
-             <p data-bindText="completed"></p>
-            <select name="completed" class="select">
-                <option value="true">true</option>
-                <option value="false">false</option>
-            </select>
-        
-        <p data-bindText="reviews2"></p>
-           <textarea name="reviews2"></textarea>
-        
-           <button data-event="click:updateReview">Test</button>
-        </form>`)
-    }*/
     
 }
