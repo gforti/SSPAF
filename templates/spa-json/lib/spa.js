@@ -6,6 +6,8 @@ class SPA {
         this.Model = new Model()
         this.view = new View()
         this.controller = new Controller(this.Model)
+        
+        
 
         window.addEventListener('hashchange', () => {
             this.loadingStart()
@@ -43,7 +45,7 @@ class SPA {
     }
 
     renderContent(page) {
-        page.then( html => {
+        return page.then( html => {
             this.content.innerHTML = html
             return this
         })        
@@ -78,7 +80,7 @@ class SPA {
     twoWayFormBind() {
         let form = this.content.querySelector('form[data-bindall]')
         if (form) {
-            form.addEventListener('change', (event) => {
+            form.addEventListener('input', (event) => {
                 const target = event.target
                 const property = target.name
                 if (property && target.matches('input, select, textarea')) {

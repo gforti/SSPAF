@@ -6,6 +6,9 @@ The idea here is to create a single page app with modern JavaScript.  This is no
 
 > Note this framework will only work on modern browsers
 
+SSPAF is a CLI that will generate the files needed for a node based dev environment.  
+
+
 ## Installation
 
 ```sh
@@ -489,3 +492,7 @@ updatePage(evt){
 ```js
 this.redirect(undefined,{id: evt.target.dataset.id})
 ``` 
+
+## More JavaScript Guides
+
+https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Form_validation

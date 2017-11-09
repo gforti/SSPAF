@@ -83,5 +83,17 @@ class Model extends BaseModel {
                     return err
                 })  
    }
+   
+   setReviews(){
+       this.dataBind.reviews = "<strong> testing reviews</strong>"
+       //this.dataBind.reviews2 = ''
+       return Promise.resolve()
+   }
+   
+   updateReview(evt){
+       console.log(this.dataBind)
+       //this.dataBind.reviews = this.dataBind.reviews2;
+       
+   }
 
 }

@@ -15,5 +15,10 @@ class Controller {
     update() {        
         return this.Model.updatePageLoad()
     }
+    
+    test() { 
+        this.Model.setReviews()
+        return Promise.resolve()
+    }
 
 }
