@@ -7,7 +7,7 @@ class SPA {
         this.view = new View()
         this.controller = new Controller(this.Model)
 
-        window.addEventListener('popstate', () => {
+        window.addEventListener('hashchange', () => {
             this.loadingStart()
             this.Model.dataBind = {}
             let page = `${window.location.hash.slice(1).split('?')[0]}`
