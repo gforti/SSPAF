@@ -17,7 +17,7 @@ class SPA {
                         return this.renderContent(this.View[page])
                     })
                     .then(() => {
-                      this.bindModelText().parseEvents().twoWayInputBind().cleanNavLinks().loadingEnd()  
+                      this.bindModelText().parseEvents().twoWayInputBind().cleanNavLinks().loadingEnd()
                     })
                     .catch(err => {
                         console.error(err)
@@ -46,7 +46,7 @@ class SPA {
         return page.then( html => {
             this.content.innerHTML = html
             return this
-        })        
+        })
     }
 
     update(evt, funcName) {
@@ -81,13 +81,13 @@ class SPA {
             inputs
                 .filter( field => (!field.dataset.hasOwnProperty('bindInput'))
                                     && (field.name || field.dataset.hasOwnProperty('bindModel')) )
-                .forEach(domElem => {            
+                .forEach(domElem => {
                     domElem.dataset.bindInput = 'true'
                     domElem.addEventListener('input', (evt) => {
                         const target = evt.target
                         const property = target.name || target.dataset.bindModel
-                        this.Model.dataBindModel = {[property]: target.value}                 
-                    })            
+                        this.Model.dataBindModel = {[property]: target.value}
+                    })
                 })
         return this
     }
@@ -95,7 +95,7 @@ class SPA {
     bindModelText() {
         let contents = [].slice.call(this.content.querySelectorAll('*[data-bind-model], input, select, textarea'))
         const obj = this.Model.dataBindModel
-        
+
         contents.forEach(domElem => {
             const property = domElem.name || domElem.dataset.bindModel
             if ( !domElem.dataset.hasOwnProperty('bindModel'))
@@ -103,7 +103,7 @@ class SPA {
             const selector = `*[data-bind-model="${property}"]`
             let val, safeVal
             const useSafeHTML = domElem.hasAttribute('data-safe')
-            console.log(property)
+
             if (obj.hasOwnProperty(property) && obj[property] !== undefined) {
                 val = obj[property]
                 safeVal = this.Model.escapeHTML(val)
@@ -119,17 +119,14 @@ class SPA {
                     let elems = [].slice.call(this.content.querySelectorAll(selector))
                     val = newValue
                     safeVal = this.Model.escapeHTML(val)
-                    console.log('setter')
-                    console.log(elems)
-                    if (elems) {
-                        elems.forEach(elem => {
-                            if ('value' in elem) elem.value = useSafeHTML ? safeVal : val
-                            else if ('innerHTML' in elem) elem.innerHTML = useSafeHTML ? safeVal : val
-                            if (!elem.matches('input, select, textarea') && elem.dataset.hasOwnProperty('bindModel'))
-                                if (!elem.innerHTML.length) elem.dataset.bindDisplay = 'hidden'
-                                else elem.dataset.bindDisplay = 'visible' 
-                        })
-                    }
+                    elems.forEach(elem => {
+                        if ('value' in elem) elem.value = useSafeHTML ? safeVal : val
+                        else if ('innerHTML' in elem) elem.innerHTML = useSafeHTML ? safeVal : val
+                        if (!elem.matches('input, select, textarea') && elem.dataset.hasOwnProperty('bindModel'))
+                            if (!elem.innerHTML.length) elem.dataset.bindDisplay = 'hidden'
+                            else elem.dataset.bindDisplay = 'visible'
+                    })
+                    
                 },
                 configurable: true
             })
