@@ -51,8 +51,8 @@ class SPA {
     }
 
     update(evt, funcName) {
-        this.Model[funcName](evt).then(() => {
-            this.bindModelText().parseEvents().twoWayInputBind()
+        return this.Model[funcName](evt).then(() => {
+            return this.bindModelText().parseEvents().twoWayInputBind()
         })
     }
 
@@ -97,13 +97,17 @@ class SPA {
     bindModelText() {
         let contents = [].slice.call(this.content.querySelectorAll('*[data-bind-model], input, select, textarea'))
         const obj = this.Model.dataBindModel
-
         contents
+                .filter( domElem => !domElem.dataset.hasOwnProperty('bindReady'))
                 .filter( domElem => domElem.name || domElem.dataset.hasOwnProperty('bindModel'))
                 .forEach(domElem => {
             const property = domElem.name || domElem.dataset.bindModel
             if ( !domElem.dataset.hasOwnProperty('bindModel'))
                 domElem.dataset.bindModel = property
+            
+            if ( !domElem.dataset.hasOwnProperty('bindReady'))
+                domElem.dataset.bindReady = 'true'
+            
             const selector = `*[data-bind-model="${property}"]`
             let val, safeVal
             const useSafeHTML = domElem.dataset.hasOwnProperty('safe')
@@ -118,7 +122,8 @@ class SPA {
             }
             if (!domElem.matches('input, select, textarea') && domElem.dataset.hasOwnProperty('bindModel'))
                 if (!domElem.innerHTML.length) domElem.dataset.bindDisplay = 'hidden'
-                else domElem.dataset.bindDisplay = 'visible'
+                else domElem.dataset.bindDisplay = 'visible'  
+            if( domElem.dataset.hasOwnProperty('bindCallback')) this.update(domElem, domElem.dataset.bindCallback)
             Object.defineProperty(obj, property, {
                 get: () => { return val },
                 set: (newValue) => {
@@ -126,18 +131,20 @@ class SPA {
                     val = newValue
                     safeVal = this.Model.escapeHTML(val)
                     elems.forEach(elem => {
+                        const useSafeHTML = elem.dataset.hasOwnProperty('safe')
                         if( elem.type === 'radio' ) elem.checked = elem.value === val
                         else if( elem.type === 'checkbox' ) elem.checked = val
                         else if ('value' in elem) elem.value = useSafeHTML ? safeVal : val
                         else if ('innerHTML' in elem) elem.innerHTML = useSafeHTML ? safeVal : val
                         if (!elem.matches('input, select, textarea') && elem.dataset.hasOwnProperty('bindModel'))
                             if (!elem.innerHTML.length) elem.dataset.bindDisplay = 'hidden'
-                            else elem.dataset.bindDisplay = 'visible'
+                            else elem.dataset.bindDisplay = 'visible'     
+                        if( elem.dataset.hasOwnProperty('bindCallback')) this.update(elem, elem.dataset.bindCallback)
                     })
-                    
                 },
                 configurable: true
             })
+            
         })
         
         return this

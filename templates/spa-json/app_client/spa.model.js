@@ -95,5 +95,13 @@ class Model extends BaseModel {
        this.dataBindModel = {reviews3: this.dataBindModel.reviews, reviews5: 5 }
        return Promise.resolve()
    }
+   
+   formatHTML(elem) {
+       const data = this.dataBindModel[elem.dataset.bindModel] 
+       if ( data && data.length )
+       elem.innerHTML = `<p data-bind-model="reviews3"></p> ${this.formatDate(data)}`
+       return Promise.resolve()
+   }
+   
 
 }
