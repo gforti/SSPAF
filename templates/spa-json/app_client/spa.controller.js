@@ -8,7 +8,8 @@ class Controller {
         return this.Model.getTodoList()
     }
     
-    add() {                   
+    add() {      
+        this.Model.clearDataBindModel()
         return Promise.resolve()
     }
     

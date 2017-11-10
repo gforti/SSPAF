@@ -2,7 +2,6 @@ class BaseModel {
 
     constructor() {
         this.APIS = {}
-        this.dataBind = {}
         this._Model = {}
         
         Object.getOwnPropertyNames(Object.getPrototypeOf(new Controller))

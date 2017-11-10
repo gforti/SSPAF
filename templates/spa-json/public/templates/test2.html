@@ -14,7 +14,7 @@ and open the template in the editor.
        <h1>Test</h1>
         
        <form data-no-submit>
-           <p data-bind-model="reviews3" data-safe></p>
+           <p data-bind-model="reviews3" data-safe data-bind-class="{fail: 'classname', pass: 'classname2'}" class="notification is-warning is-spaced"></p>
            <input type="text" data-bind-model="reviews"/>
         
              <p data-bind-model="completed"></p>
@@ -29,7 +29,7 @@ and open the template in the editor.
            <p data-bind-model="reviews5"></p>
            <textarea name="reviews5" data-bind-input></textarea>
         
-           <button data-event="click:updateReview">Test</button>
+           <button data-bind-event="click:updateReview">Test</button>
        
            
            <p>Please select your preferred contact method:</p>

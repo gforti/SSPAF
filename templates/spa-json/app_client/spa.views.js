@@ -6,7 +6,7 @@ class View {
                         <h1 class="title">Todo Crud Sample</h1>
                     </div>
                 </section>
-                <p data-bindtext="deleteResultMsg" data-safe data-bindcss="{fail: 'classname', pass: 'classname'}" class="notification is-warning is-spaced"></p>              
+                <p data-bind-model="deleteResultMsg" data-safe data-bindcss="{fail: 'classname', pass: 'classname'}" class="notification is-warning is-spaced"></p>              
                 <table class="table is-spaced is-bordered is-hoverable is-fullwidth is-small">
                   <thead>
                     <tr class="is-selected">
@@ -17,7 +17,7 @@ class View {
                         <th></th>
                     </tr>
                   </thead>
-                  <tbody data-bindtext="todoTable"></tbody>
+                  <tbody data-bind-model="todoTable"></tbody>
               </table>`)
     }
     
@@ -27,7 +27,7 @@ class View {
                         <h1 class="title">Add New Todo</h1>
                     </div>
                 </section>
-                <form data-bindall>
+                <form data-no-submit>
                     <div class="field">
                         <label class="label">Title</label>
                         <input type="text" name="title" class="input" required />
@@ -42,19 +42,19 @@ class View {
                     </div>
                     <div class="field"> 
                         <input type="reset" value="reset" />
-                        <input type="button" value="submit" class="button is-link" data-event="click:saveTodo" /> 
+                        <input type="button" value="submit" class="button is-link" data-bind-event="click:saveTodo" /> 
                     </div>
-                    <p data-bindtext="saveResultMsg" data-safe class="notification is-warning"></p>
+                    <p data-bind-model="saveResultMsg" data-safe class="notification is-warning"></p>
                 </form>`)
     }
 
     get update() {
         return Promise.resolve(`<section class="hero is-info is-small spacer">
                     <div class="hero-body">
-                        <h1 class="title">Update Todo ID <span data-bindtext="id" class="has-text-warning"></span></h1>
+                        <h1 class="title">Update Todo ID <span data-bind-model="id" class="has-text-warning"></span></h1>
                     </div>
                 </section>
-                <form data-bindall>
+                <form data-no-submit>
                     <div class="field">
                         <label class="label">Title</label>
                         <input type="text" name="title" class="input" required />
@@ -67,9 +67,9 @@ class View {
                         </select>
                     </div>
                     <div class="field">
-                        <input type="button" value="submit" data-event="click:updateTodo" class="button is-link" />
+                        <input type="button" value="submit" data-bind-event="click:updateTodo" class="button is-link" />
                     </div>
-                    <p data-bindtext="updateResultMsg" data-safe class="notification is-warning is-spaced"></p>
+                    <p data-bind-model="updateResultMsg" data-safe class="notification is-warning is-spaced"></p>
                 </form>`)
     }
     
