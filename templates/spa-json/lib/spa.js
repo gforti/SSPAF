@@ -102,7 +102,7 @@ class SPA {
                 domElem.dataset.bindModel = property
             const selector = `*[data-bind-model="${property}"]`
             let val, safeVal
-            const useSafeHTML = domElem.hasAttribute('data-safe')
+            const useSafeHTML = domElem.dataset.hasOwnProperty('safe')
 
             if (obj.hasOwnProperty(property) && obj[property] !== undefined) {
                 val = obj[property]
