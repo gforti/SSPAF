@@ -85,14 +85,14 @@ class Model extends BaseModel {
    }
    
    setReviews(){
-       this.dataBind.reviews = "<strong> testing reviews</strong>"
+       // this.clearDataBindModel()
+       this.dataBindModel = {reviews: "<strong> testing reviews</strong>"}
        //this.dataBind.reviews2 = ''
        return Promise.resolve()
    }
    
    updateReview(evt){
-       console.log(evt.target.dataBind)
-       this.dataBind.reviews3 = this.dataBind.reviews;
+       this.dataBindModel = {reviews3: this.dataBindModel.reviews, reviews5: 5 }
        return Promise.resolve()
    }
 
