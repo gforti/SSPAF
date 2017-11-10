@@ -13,6 +13,7 @@ and open the template in the editor.
     <body>
        <h1>Test</h1>
         
+       <form data-no-submit>
            <p data-bind-model="reviews3" data-safe></p>
            <input type="text" data-bind-model="reviews"/>
         
@@ -30,6 +31,33 @@ and open the template in the editor.
         
            <button data-event="click:updateReview">Test</button>
        
+           
+           <p>Please select your preferred contact method:</p>
+           <p data-bind-model="contact"></p>
+            <div>
+              <input type="radio" id="contactChoice1"
+               name="contact" value="email">
+              <label for="contactChoice1">Email</label>
+
+              <input type="radio" id="contactChoice2"
+               name="contact" value="phone">
+              <label for="contactChoice2">Phone</label>
+
+              <input type="radio" id="contactChoice3"
+               name="contact" value="mail">
+              <label for="contactChoice3">Mail</label>
+            </div>
+           
+           
+           <p>  <input id="field_terms" type="checkbox" required name="terms">
+                <label for="field_terms">I accept the <u>Terms and Conditions</u></label>
+           </p>
+           
+           <p data-bind-model="reviews2"></p>
+           <input type="date" name="date" />
+
+           <input type="reset" value="Reset" />
+           </form>
         
     </body>
 </html>

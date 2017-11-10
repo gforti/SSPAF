@@ -6,6 +6,7 @@ class SPA {
         this.Model = new Model()
         this.View = new View()
         this.controller = new Controller(this.Model)
+        this.checkedRegex = /(radio|checkbox)/i
 
         window.addEventListener('hashchange', () => {
             this.loadingStart()
@@ -76,19 +77,20 @@ class SPA {
     }
 
     twoWayInputBind() {
-        let inputs = [].slice.call(this.content.querySelectorAll('input, select, textarea'))
-        if (inputs)
-            inputs
-                .filter( field => (!field.dataset.hasOwnProperty('bindInput'))
-                                    && (field.name || field.dataset.hasOwnProperty('bindModel')) )
-                .forEach(domElem => {
-                    domElem.dataset.bindInput = 'true'
-                    domElem.addEventListener('input', (evt) => {
-                        const target = evt.target
-                        const property = target.name || target.dataset.bindModel
-                        this.Model.dataBindModel = {[property]: target.value}
-                    })
+        let inputs = [].slice.call(this.content.querySelectorAll('input, select, textarea'))       
+        inputs
+            .filter( field => (!field.dataset.hasOwnProperty('bindInput'))
+                                && (field.name || field.dataset.hasOwnProperty('bindModel')) )
+            .forEach(domElem => {
+                domElem.dataset.bindInput = 'true'
+                const evtName = this.checkedRegex.test(domElem.type) ? 'change' : 'input'
+                domElem.addEventListener(evtName, (evt) => {
+                    const target = evt.target
+                    const property = target.name || target.dataset.bindModel
+                    const value = evt.target.type === 'checkbox' ? target.checked : target.value
+                    this.Model.dataBindModel = {[property]: value}
                 })
+            })
         return this
     }
 
@@ -96,7 +98,9 @@ class SPA {
         let contents = [].slice.call(this.content.querySelectorAll('*[data-bind-model], input, select, textarea'))
         const obj = this.Model.dataBindModel
 
-        contents.forEach(domElem => {
+        contents
+                .filter( domElem => domElem.name || domElem.dataset.hasOwnProperty('bindModel'))
+                .forEach(domElem => {
             const property = domElem.name || domElem.dataset.bindModel
             if ( !domElem.dataset.hasOwnProperty('bindModel'))
                 domElem.dataset.bindModel = property
@@ -107,7 +111,9 @@ class SPA {
             if (obj.hasOwnProperty(property) && obj[property] !== undefined) {
                 val = obj[property]
                 safeVal = this.Model.escapeHTML(val)
-                if ('value' in domElem) domElem.value = useSafeHTML ? safeVal : val
+                if( domElem.type === 'radio' ) domElem.checked = domElem.value === val
+                else if( domElem.type === 'checkbox' ) domElem.checked = val
+                else if ('value' in domElem) domElem.value = useSafeHTML ? safeVal : val
                 else if ('innerHTML' in domElem) domElem.innerHTML = useSafeHTML ? safeVal : val
             }
             if (!domElem.matches('input, select, textarea') && domElem.dataset.hasOwnProperty('bindModel'))
@@ -120,7 +126,9 @@ class SPA {
                     val = newValue
                     safeVal = this.Model.escapeHTML(val)
                     elems.forEach(elem => {
-                        if ('value' in elem) elem.value = useSafeHTML ? safeVal : val
+                        if( elem.type === 'radio' ) elem.checked = elem.value === val
+                        else if( elem.type === 'checkbox' ) elem.checked = val
+                        else if ('value' in elem) elem.value = useSafeHTML ? safeVal : val
                         else if ('innerHTML' in elem) elem.innerHTML = useSafeHTML ? safeVal : val
                         if (!elem.matches('input, select, textarea') && elem.dataset.hasOwnProperty('bindModel'))
                             if (!elem.innerHTML.length) elem.dataset.bindDisplay = 'hidden'

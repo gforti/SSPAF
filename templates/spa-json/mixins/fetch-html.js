@@ -8,7 +8,6 @@ Object.assign(View.prototype, {
                 })
                 .then( text => {
                     let doc = new DOMParser().parseFromString(text, "text/html");
-                    console.log(doc.body.innerHTML.toString())
                     return doc.body.innerHTML.toString()
                 })
                 .catch(err => {

@@ -50,16 +50,33 @@
     margin-bottom: 1rem;
 }
 
-input:invalid, 
-select:invalid
-textarea:invalid
+input:required:invalid, 
+select:required:invalid
+textarea:required:invalid
 {
   border: 1px solid red;
 }
 
-input:valid, 
-select:valid
-textarea:valid
+input:required:valid, 
+select:required:valid
+textarea:required:valid
 {
   border: 1px solid green;
+}
+
+
+input[type="checkbox"]:required {
+    display: none;
+  }
+input[type="checkbox"]:required:invalid + label::before {
+  content: "\2610";
+  padding-right: 0.2em;
+  font-size: 1.6em;
+  color: red;
+}
+input[type="checkbox"]:required:valid + label::before {
+  content: "\2611";
+  padding-right: 0.2em;
+  font-size: 1.6em;
+  color: green;
 }
