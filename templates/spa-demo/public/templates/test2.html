@@ -13,8 +13,8 @@ and open the template in the editor.
     <body>
        <h1>Test</h1>
         
-       <form data-custom-no-submit>
-           <p data-bind-model="reviews3" data-bind-safe  class="notification is-warning is-spaced"></p>
+       <form data-no-submit>
+           <p data-bind-model="reviews3" data-bind-safe class="is-warning is-spaced"></p>
            <input type="text" data-bind-model="reviews"/>
         
              <p data-bind-model="completed"></p>
@@ -53,7 +53,7 @@ and open the template in the editor.
                 <label for="field_terms">I accept the <u>Terms and Conditions</u></label>
            </p>
            
-           <p data-bind-class="{'is-info':'condition', 'is-warning':'!condition'}" class="notification is-spaced">Show this message when the checkbox is checked</p>
+           <p data-bind-class="{'is-info':'condition', 'is-warning':'!condition'}" class="is-spaced">Class change when the checkbox is checked</p>
            
            <p data-bind-model="date" data-bind-callback="formatHTML"></p>
            <input type="date" name="date" />

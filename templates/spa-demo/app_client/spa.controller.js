@@ -23,5 +23,10 @@ class Controller {
     safe() {
         return this.Model.setTest()
     }
+    
+    form2() {
+        this.Model.setReviews()
+        return Promise.resolve()
+    }
 
 }

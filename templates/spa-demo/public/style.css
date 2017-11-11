@@ -82,3 +82,64 @@ body#safe > nav > a[href$="safe"]
     text-align: center;
     text-decoration: none;
 }
+
+
+
+*[data-bind-display=hidden]:not(input):not(select):not(textarea) {    
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+    visibility: hidden;
+}
+*[data-bind-display=visible]:not(input):not(select):not(textarea) {    
+    opacity: 1;
+    transition: opacity 0.3s, visibility 0.3s;
+    visibility: visible;
+}
+
+
+.table td {
+    vertical-align: middle;
+}
+
+.spacer {
+    margin-bottom: 1rem;
+}
+
+input:required:invalid, 
+select:required:invalid
+textarea:required:invalid
+{
+  border: 1px solid red;
+}
+
+input:required:valid, 
+select:required:valid
+textarea:required:valid
+{
+  border: 1px solid green;
+}
+
+
+input[type="checkbox"]:required {
+    display: none;
+  }
+input[type="checkbox"]:required:invalid + label::before {
+  content: "\2610";
+  padding-right: 0.2em;
+  font-size: 1.6em;
+  color: red;
+}
+input[type="checkbox"]:required:valid + label::before {
+  content: "\2611";
+  padding-right: 0.2em;
+  font-size: 1.6em;
+  color: green;
+}
+
+.is-info {
+    background-color: lightcyan;
+}
+
+.is-warning {
+    background-color: gold;
+}
