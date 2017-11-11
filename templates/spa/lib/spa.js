@@ -101,10 +101,10 @@ class SPA {
     twoWayInputBind() {
         let inputs = [].slice.call(this.content.querySelectorAll('input, select, textarea'))       
         inputs
-            .filter( field => (!field.dataset.hasOwnProperty('bindInput'))
-                                && (field.name || field.dataset.hasOwnProperty('bindModel')) )
+            .filter( field => field.dataset.bindInput !== 'false' )
+            .filter( field => field.name || field.dataset.hasOwnProperty('bindModel') )
             .forEach(domElem => {
-                domElem.dataset.bindInput = 'true'
+                domElem.dataset.bindInput = 'false'
                 const evtName = this.checkedRegex.test(domElem.type) ? 'change' : 'input'
                 domElem.addEventListener(evtName, (evt) => {
                     const target = evt.target

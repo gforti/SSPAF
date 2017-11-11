@@ -6,7 +6,7 @@ The idea here is to create a single page app with modern JavaScript.  This is no
 
 > Note this framework will only work on modern browsers
 
-SSPAF is a CLI that will generate the files needed for a node based dev environment.  
+SSPAF is a CLI that will generate the files needed for a node based dev environment.
 
 
 ## Installation
@@ -90,10 +90,15 @@ This file is the core of the SPA.  It's the director and manages the page.  Noth
 - Two way binding
 - Auto Form two way binding when changes are made
 - Http calls
+- Http template calls **NEW**
 - Event Listener binding
 - Loading Screen
 - Promise based
 - Modern use of JavaScript (es6+)
+- CSS class binding **NEW**
+
+> After each page is finished loading the `spaRouteReady` Event is dispatched
+
 
 
 ## spa.views.js
@@ -102,79 +107,120 @@ The views are your page templates.  When a hash triggers a page the view will be
 
 The hash name must match the view name.
 
-> location `#test` must have `test() { return html }`
+> location `#test` must have 
+
+```js
+get home() {
+    return Promise.resolve(html)
+}
+```
+
+with the mixin extention **fetch-html.js** there is a feature to call in template HTML files
+
+just the location of the html file
+
+```js
+get form() {
+    return this.fetchHTML('public/templates/form.html')
+} 
+```
 
 
 ### Adding Links
 
 Be sure to update the nav links on `index.html` for global navigation
 
-### Bind HTML
 
-You can add the `data-bindText` attribute to a tag to inject html from the model.
+### Bind Info
 
-The value of the custom attribute will be tied to the `model.bindData` object
+Adding a `data-bind-*` attribute to html tags allows the simple framework to maintain the state of your page elements
+
+Here is a list of bind attributes you can add
+
+| Attribute | Use |
+| ------ | ------ |
+| data-bind-model | Model key name |
+| data-bind-callback | Model function called after bind-model update |
+| data-bind-safe | Escape HTML before bind-model |
+| data-bind-input="false" | Ignore two way binding for form fields |
+| data-bind-event | Attach an event listener |
+| data-bind-class | Add or remove class names based on a condition |
+
+These are reserved by the framework
+
+| Attribute | Use |
+| ------ | ------ |
+| data-bind-ready | framework has setup watch for element |
+| data-bind-display | Element bind-model value is empty or not empty (visible or hidden)  |
+
+
+
+### Bind HTML (data-bind-model)
+
+You can add the `data-bind-model` attribute to a tag to inject html from the model.
+
+The value of the custom attribute will be tied to the `model.dataBindModel` object
 
 ```html
-<p data-bindText="reviews"></p>
+<p data-bind-model="reviews"></p>
 ```
 
 Inside of `spa.model.js`
 
 ```js
-this.bindData.reviews = `<strong>Hello World</strong>`
+this.dataBindModel.reviews = `<strong>Hello World</strong>`
 ```
 
-If you would like to do a safe bind just include the attribute `data-safe` along with the `data-bindText` attribute 
+If you would like to do a safe bind just include the attribute `data-safe` along with the `data-bind-model` attribute 
 
 ```html
-<p data-bindText="reviews" data-safe></p>
+<p data-bind-model="reviews" data-bind-safe></p>
 ```
 
-### Display State (data-spadisplay)
+### Display State (data-bind-display)
 
-when you bind HTML to a DOM element it will manage a custom attribute called `data-spadisplay`.
+when you bind HTML to a DOM element it will manage a custom attribute called `data-bind-display`.
 This gives you the flexibility to decide how empty DOM elements waiting for a value should be displayed
 
-This attribute can be managed by css to either always display or use the `visibility: hidden` | `display: none` properties.
+This attribute can be managed by `CSS` to either always display or use the `visibility: hidden` | `display: none` properties.
 
-The default css used in `public/style.css`
+The default CSS used in `public/style.css`
 
 ```css
-*[data-spadisplay=hidden] {    
+*[data-bind-display=hidden]:not(input):not(select):not(textarea) {    
     opacity: 0;
     transition: opacity 0.3s, visibility 0.3s;
     visibility: hidden;
 }
-*[data-spadisplay=visible] {    
+*[data-bind-display=visible]:not(input):not(select):not(textarea) {    
     opacity: 1;
     transition: opacity 0.3s, visibility 0.3s;
     visibility: visible;
 }
 ```
 
-### DOM Events
+### DOM Events (data-bind-event)
 
-Events can also be binded to html tags with the custom attribute `data-event` like so
+Events can also be binded to html tags with the custom attribute `data-bind-event` like so
 
 ```html
-<input type="text" name="author" data-event="keyup:updateAuthor" />
+<input type="text" name="author" data-bind-event="keyup:updateAuthor" />
 ```
 or 
 ```html
-<input type="button" value="submit" data-event="click:saveReviews" />
+<input type="button" value="submit" data-bind-event="click:saveReviews" />
 ```
 
 The first value is the event followed by the function to be called from the `Model class`
 
-> data-event="`event`:`function`"
+> data-bind-event="`event`:`function`"
 
 Must be a supported event in JavaScript. The function cannot pass any custom paramters but does pass the event object.
 
 You can access the event object to get the target DOM Element.
 
 ```html
-<button data-id="${row._id}" data-event="click:updatePage">Update</button>
+<button data-id="${row._id}" data-bind-event="click:updatePage">Update</button>
 ```
 
 In the `spa.model.js` file you can write the event like so
@@ -187,24 +233,86 @@ updatePage(evt){
 }
 ```
 
-### Auto Bind Form Data on change
+### Auto Bind for Input fields on change
 
-To bind all form fields just add the `data-bindall` attribute to the form tag
-
-All fields with a `name` attribute will auto bind the name as the key with the changed value to the `model.bindData` object
+All fields with a `name` attribute will auto bind the name as the key with the changed value to the `model.dataBindModel` object
 
 Currently only `input`, `select` and `textarea` fields are supported
 
 > Other fields can easily be supported by updating the `lib/spa.js` file; function `bindModelText()` selectors and update `twoWayFormBind()` target.matches
 
 ```html
-<form data-bindall>
-    <input type="text" name="reviewText" />
-</form>
+<input type="text" name="reviewText" />
 ```
 
 ```js
-model.bindData.reviewText // this value is available by the data-bindall attribute
+model.dataBindModel.reviewText // this value is available by the input[name] attribute
+```
+
+If you wish to ignore this bind either remove the name attribute or the data-bind-model. 
+If it must have a name attribute you may add the following attribute
+
+```html
+<input type="text" name="reviewText" data-bind-input="false" />
+```
+
+
+### data-bind-callback
+
+A callback can be used after element bind model has been updated.
+
+The function must be in the `Model` class.  It passes the element as the first parameter
+
+```html
+<p data-bind-model="date" data-bind-callback="formatHTML"></p>
+```
+
+> Not that the `formatDate` function is a mixin addon
+
+```js
+formatHTML(elem) {
+    const data = this.dataBindModel[elem.dataset.bindModel] 
+    if ( data && data.length )
+    elem.innerHTML = `<p data-bind-model="reviews3"></p> ${this.formatDate(data)}`
+    return Promise.resolve()
+}
+```
+
+
+### data-bind-class
+
+This allows you to add or remove a class based on a condition.  All keys and values must have a single qoute(').
+
+```html
+data-bind-class="{'class name' : 'condition'}"
+```
+
+The condition also allows for false states too by adding **!** to the condition
+
+```html
+data-bind-class="{'class name' : '!condition'}"
+```
+
+```html
+<p data-bind-class="{'is-info':'condition', 'is-warning':'!condition'}">Testing</p>
+```
+
+Full example
+
+```html
+<p>  <input id="field_terms" type="checkbox" required name="terms">
+    <label for="field_terms">I accept the <u>Terms and Conditions</u></label>
+</p>
+
+<p data-bind-class="{'is-info':'condition', 'is-warning':'!condition'}" class="is-spaced">Class change when the checkbox is checked</p>
+```
+
+The function in the Model class must return a boolean and must be a get variable not a function
+
+```js
+get condition() {
+    return this.dataBindModel.terms
+}
 ```
 
 
@@ -212,21 +320,21 @@ model.bindData.reviewText // this value is available by the data-bindall attribu
 
 This file is to place component views that are injected after the page is loaded.
 
-> All functions should be `static`
+> All functions should be `static and must return a Promise`
 
-Data can be passed and processed to return the html for the view.  To be properly injected you must update the `bindData` from the `Model class`
+Data can be passed and processed to return the html for the view.  To be properly injected you must update the `dataBindModel` from the `Model class`
 and also bind the text into the html view.
 
 **spa.views.js**
 ```html
-<tbody data-bindtext="reviewTable"></tbody>
+<tbody data-bind-model="reviewTable"></tbody>
 ```
 
 **spa.components.js**
 ```js
 static resultsData(data){
-    if ( ! Array.isArray(data) ) return ''
-    return `${data.map(row=>                                         
+    if ( ! Array.isArray(data) ) return Promise.resolve('')
+    return Promise.resolve(`${data.map(row=>                                         
                 `<tr>
                     <td>${row.author}</td>
                     <td>${row.rating}</td>
@@ -234,29 +342,29 @@ static resultsData(data){
                     <td><button data-id="${row._id}" data-event="click:deleteReview">Delete</button></td>
                     <td><button data-id="${row._id}" data-event="click:updatePage">Update</button></td>
                 </tr>`
-            ).join('')}`
+            ).join('')}`)
 }
 ```
 
 **spa.model.js**
 ```js
-getReviews() {
-    return this.http.get(this.APIS.Reviews)
-           .then( data => {
-                return this.dataBind.reviewTable = Components.resultsData(data) 
-            })                       
-}
+getTodoList() {
+        return this.http.get(this.APIS.Todo)
+                .then( data => {
+                   return Components.todoTable(data).then(html => { return this.dataBindModel.todoTable = html })
+                })
+    }
 ```
 
 
 ## spa.model.js
 
 The Model is where all your business logic should be. Functions that will be executed from `data-event`s or values that will be binded 
-with `this.bindData` are to be handled within the `Model class`.
+with `this.dataBindModel` are to be handled within the `Model class`.
 
-> Note the `this.bindData` object resets after a new page is loaded
+> Note the `this.dataBindModel` object resets after a new page is loaded
 
-The Base Model comes with code to store API endpoints, the bindData object, http calls with fetch, and support for url query/search params
+The Base Model comes with code to store API endpoints, the dataBindModel object, http calls with fetch, and support for url query/search params
 
 ### Fetch calls
 
@@ -266,9 +374,9 @@ for a backend service.
 **Payload Data**
 ```js
 const data = {
-    author : this.dataBind.author,
-    rating : this.dataBind.rating,
-    reviewText : this.dataBind.reviewText
+    author : this.dataBindModel.author,
+    rating : this.dataBindModel.rating,
+    reviewText : this.dataBindModel.reviewText
 }
 ```
 **Functions available**
@@ -324,6 +432,35 @@ const params = this.generateUrlParams({id: '123'})
 > Note that the nav links that are on the `index.html` page have the query/search params removed on each view update.
 
 
+### Working with dataBindModel
+
+The data model is maintained by each page.  So the #home page and the #form page has its own data. 
+
+You can set a key with a value like so
+
+```js
+this.dataBindModel.author = 'Gabriel'
+```
+
+You can also set multipule values too
+
+```js
+this.dataBindModel = {author: 'Gabriel', review: 'Cool Guy'}
+```
+
+if you want to clear all the keys for a page you use the `clearDataBindModel()` function
+
+> The function will know what page you are on and only clear the bind model data on the current page only
+
+```js
+add() { 
+    this.Model.clearDataBindModel()
+    return window.Promise.resolve()
+}
+```
+
+
+
 ### Here are some samples on how to create functions.
 
 > You can chain your promise functions by returning a value. 
@@ -335,91 +472,13 @@ deleteReview(evt) {
     const url = `${this.APIS.Reviews}${evt.target.dataset.id}`
     return this.http.delete(url)
            .then( ()=>{
-               return this.dataBind.deleteResultMsg = 'Review Deleted'                                
+               return this.dataBindModel.deleteResultMsg = 'Review Deleted'                                
            }).catch( err => {
-                return this.dataBind.deleteResultMsg = 'Review NOT Deleted'                                 
+                return this.dataBindModel.deleteResultMsg = 'Review NOT Deleted'                                 
            }).then( () => {
                return this.getReviews()
            })
 }
-```
-
-**Crud**
-
-```js
-    getReviews() {
-       return this.http.get(this.APIS.Reviews)
-              .then( data => {
-                   return this.dataBind.reviewTable = Components.resultsData(data) 
-               })                       
-   }
-
-   saveReviews() {
-       const data = {
-           author : this.dataBind.author,
-           rating : this.dataBind.rating,
-           reviewText : this.dataBind.reviewText
-       }                    
-       return this.http.post(this.APIS.Reviews, data)
-               .then( data => {
-                   this.dataBind.saveResultMsg = 'Review Saved'
-                   return data
-               }).catch( err => {
-                   this.dataBind.saveResultMsg = 'Review NOT Saved'   
-                   return err
-               })                   
-   }
-
-   deleteReview(evt) {
-       const url = `${this.APIS.Reviews}${evt.target.dataset.id}`
-       return this.http.delete(url)
-               .then( ()=>{
-                   return this.dataBind.deleteResultMsg = 'Review Deleted'                                
-               }).catch( err => {
-                    return this.dataBind.deleteResultMsg = 'Review NOT Deleted'                                 
-               }).then( () => {
-                   return this.getReviews()
-               })
-   }
-
-   updateAuthor(evt){
-       this.dataBind.author = evt.target.value
-       return Promise.resolve()
-   }
-   
-   updatePage(evt){       
-       const params = this.generateUrlParams({id: evt.target.dataset.id})
-       window.location.href = `${params}#update`  
-       return Promise.resolve()
-   }
-   
-   updatePageLoad(){
-       const url = `${this.APIS.Reviews}${this.urlParams().get('id')}`
-       return this.http.get(url).then( data => {           
-           this.dataBind.author = data.author
-           this.dataBind.rating = data.rating
-           this.dataBind.reviewText = data.reviewText
-           this.dataBind._id = data._id
-           return data
-       })       
-   }
-   
-   updateReviews(){
-       const data = {
-           author : this.dataBind.author,
-           rating : this.dataBind.rating,
-           reviewText : this.dataBind.reviewText
-       }  
-       const url = `${this.APIS.Reviews}${this.dataBind._id}`
-       return this.http.put(url, data)
-               .then( data => {
-                   this.dataBind.updateResultMsg = 'Review updated'
-                   return data
-               }).catch( err => {
-                   this.dataBind.updateResultMsg = 'Review NOT updated'   
-                   return err
-               })  
-   }
 ```
 
 ## spa.controller.js

@@ -10,7 +10,6 @@ class SPA {
 
         window.addEventListener('hashchange', () => {
             this.loadingStart()
-            this.Model.dataBind = {}
             let page = this.Model.page
             document.body.id = page
             this.controller[page]()
@@ -22,7 +21,9 @@ class SPA {
                     })
                     .catch(err => {
                         console.error(err)
-                        this.renderContent(this.Model.escapeHTML(err)).cleanNavLinks().loadingEnd()
+                        this.renderContent(window.Promise.resolve(this.Model.escapeHTML(err))).then(()=> {
+                            this.cleanNavLinks().loadingEnd() 
+                        })
                     })
         })
 
@@ -100,10 +101,10 @@ class SPA {
     twoWayInputBind() {
         let inputs = [].slice.call(this.content.querySelectorAll('input, select, textarea'))       
         inputs
-            .filter( field => (!field.dataset.hasOwnProperty('bindInput'))
-                                && (field.name || field.dataset.hasOwnProperty('bindModel')) )
+            .filter( field => field.dataset.bindInput !== 'false' )
+            .filter( field => field.name || field.dataset.hasOwnProperty('bindModel') )
             .forEach(domElem => {
-                domElem.dataset.bindInput = 'true'
+                domElem.dataset.bindInput = 'false'
                 const evtName = this.checkedRegex.test(domElem.type) ? 'change' : 'input'
                 domElem.addEventListener(evtName, (evt) => {
                     const target = evt.target
