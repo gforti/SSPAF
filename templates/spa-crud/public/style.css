@@ -29,10 +29,6 @@
     visibility: visible;
 }
 
-body#home {
-    background-color: coral;
-}
-
 
 *[data-bind-display=hidden]:not(input):not(select):not(textarea) {    
     opacity: 0;

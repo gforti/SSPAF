@@ -1,7 +1,7 @@
 class View {
 
     get home() {
-        return `<h1>Home page</h1>`
+        return Promise.resolve(`<h1>Home page</h1>`)
     }
     
 }
