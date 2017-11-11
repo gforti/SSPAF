@@ -73,8 +73,4 @@ class View {
                 </form>`)
     }
     
-     get test() {
-        return this.fetchHTML('public/templates/test2.html')
-    } 
-    
 }

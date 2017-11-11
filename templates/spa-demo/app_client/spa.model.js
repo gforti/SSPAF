@@ -50,7 +50,7 @@ class Model extends BaseModel {
    }
    
    
-   condition() {
+   get condition() {
        return this.dataBindModel.terms
    }
 
