@@ -11,5 +11,8 @@
     "open": "0.0.5",
     "serve-static": "^1.13.1",
     "uglify-es": "^3.1.5"
+  },
+  "dependencies": {
+    "bulma": "^0.6.1"
   }
 }

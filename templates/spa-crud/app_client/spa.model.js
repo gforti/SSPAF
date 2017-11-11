@@ -7,10 +7,11 @@ class Model extends BaseModel {
         }
     }
     
+    
     getTodoList() {
         return this.http.get(this.APIS.Todo)
                 .then( data => {
-                   return this.dataBind.todoTable = Components.todoTable(data)
+                   return Components.todoTable(data).then(html => { return this.dataBindModel.todoTable = html })
                 })
     }
     
@@ -18,28 +19,34 @@ class Model extends BaseModel {
        const url = `${this.APIS.Todo}${evt.target.dataset.id}`
        return this.http.delete(url)
                 .then( ()=>{
-                   return this.dataBind.deleteResultMsg = 'Todo Deleted'                                
+                   return this.dataBindModel.deleteResultMsg = 'Todo Deleted'                                
                 }).catch( err => {
-                    return this.dataBind.deleteResultMsg = 'Todo was NOT Deleted'                                 
+                    return this.dataBindModel.deleteResultMsg = 'Todo was NOT Deleted'                                 
                 }).then( () => {
                    return this.getTodoList()
                 })
     
     }
     
-    saveTodo() {
+    saveTodo(evt) {
+        
+        let form = evt.target.form        
+        if (!form.checkValidity()) {
+            this.dataBindModel.saveResultMsg = 'All fields are required'
+            return Promise.resolve()
+        }
         const data = {
-           title : this.dataBind.title,
-           completed : this.dataBind.completed
-       }                    
-       return this.http.post(this.APIS.Todo, data)
+           title : this.dataBindModel.title,
+           completed : this.dataBindModel.completed
+        }                    
+        return this.http.post(this.APIS.Todo, data)
                 .then( data => {
-                   this.dataBind.saveResultMsg = 'Todo Saved'
+                   this.dataBindModel.saveResultMsg = 'Todo Saved'
                    return data
                 }).catch( err => {
-                   this.dataBind.saveResultMsg = 'Todo was NOT Saved'   
+                   this.dataBindModel.saveResultMsg = 'Todo was NOT Saved'   
                    return err
-                })     
+                })  
     }
     
     goToUpdatePage(evt) {
@@ -50,27 +57,45 @@ class Model extends BaseModel {
     updatePageLoad() {
         const url = `${this.APIS.Todo}${this.urlParams().get('id')}`
         return this.http.get(url).then( data => {           
-            this.dataBind.title = data.title
-            this.dataBind.completed = data.completed
-            this.dataBind.id = data.id
+            this.dataBindModel = {title: data.title, completed: data.completed, id: data.id }
             return data
-        })       
-   }
-   
-   updateTodo() {
-       const data = {
-           title : this.dataBind.title,
-           completed : this.dataBind.completed
-       }
-        const url = `${this.APIS.Todo}${this.dataBind.id}`
-        return this.http.put(url, data)
-                .then( data => {
-                    this.dataBind.updateResultMsg = 'Todo updated'
-                    return data
-                }).catch( err => {
-                    this.dataBind.updateResultMsg = 'Todo was NOT updated'   
-                    return err
-                })  
-   }
+        })     
+    }
+
+    updateTodo(evt) {
+        let form = evt.target.form        
+         if (!form.checkValidity()) {
+             this.dataBindModel.updateResultMsg = 'All fields are required'
+             return Promise.resolve()
+         }
+        const data = {
+            title : this.dataBindModel.title,
+            completed : this.dataBindModel.completed
+        }
+         const url = `${this.APIS.Todo}${this.dataBindModel.id}`
+         return this.http.put(url, data)
+                 .then( data => {
+                     this.dataBindModel.updateResultMsg = 'Todo updated'
+                     return data
+                 }).catch( err => {
+                     this.dataBindModel.updateResultMsg = 'Todo was NOT updated'   
+                     return err
+                 })  
+    }
+
+    get isDeleted() {
+        const msg = this.dataBindModel.deleteResultMsg
+        return msg && msg.toLowerCase().indexOf('not') === -1
+    }
+
+    get isAdded() {
+        const msg = this.dataBindModel.saveResultMsg
+        return msg && msg.toLowerCase().indexOf('not') === -1 && msg.toLowerCase().indexOf('required') === -1
+    }
+
+    get isUpdated() {
+        const msg = this.dataBindModel.updateResultMsg
+        return msg && msg.toLowerCase().indexOf('not') === -1 && msg.toLowerCase().indexOf('required') === -1
+    }
 
 }

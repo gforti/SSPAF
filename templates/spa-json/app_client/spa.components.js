@@ -1,7 +1,7 @@
 class Components {
     
    static todoTable(data){
-        if ( ! Array.isArray(data) ) return Promise.resolve('')
+        if ( !Array.isArray(data) ) return Promise.resolve('')
         return Promise.resolve(`${data.map(row=>                                         
                     `<tr>
                         <td>${row.id}</td>
@@ -12,8 +12,5 @@ class Components {
                     </tr>`
                 ).join('')}`)
     }
-    
-    
-    
     
 }

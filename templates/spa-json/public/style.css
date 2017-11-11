@@ -67,13 +67,15 @@ textarea:required:valid
 
 input[type="checkbox"]:required {
     display: none;
-  }
+}
+
 input[type="checkbox"]:required:invalid + label::before {
   content: "\2610";
   padding-right: 0.2em;
   font-size: 1.6em;
   color: red;
 }
+
 input[type="checkbox"]:required:valid + label::before {
   content: "\2611";
   padding-right: 0.2em;

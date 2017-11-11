@@ -10,7 +10,6 @@ class SPA {
 
         window.addEventListener('hashchange', () => {
             this.loadingStart()
-            this.Model.dataBind = {}
             let page = this.Model.page
             document.body.id = page
             this.controller[page]()
@@ -22,7 +21,9 @@ class SPA {
                     })
                     .catch(err => {
                         console.error(err)
-                        this.renderContent(this.Model.escapeHTML(err)).cleanNavLinks().loadingEnd()
+                        this.renderContent(window.Promise.resolve(this.Model.escapeHTML(err))).then(()=> {
+                            this.cleanNavLinks().loadingEnd() 
+                        })
                     })
         })
 
