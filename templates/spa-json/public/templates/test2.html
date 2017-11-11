@@ -14,7 +14,7 @@ and open the template in the editor.
        <h1>Test</h1>
         
        <form data-no-submit>
-           <p data-bind-model="reviews3" data-safe data-bind-class="{fail: 'classname', pass: 'classname2'}" class="notification is-warning is-spaced"></p>
+           <p data-bind-model="reviews3" data-bind-safe  class="notification is-warning is-spaced"></p>
            <input type="text" data-bind-model="reviews"/>
         
              <p data-bind-model="completed"></p>
@@ -52,6 +52,8 @@ and open the template in the editor.
            <p>  <input id="field_terms" type="checkbox" required name="terms">
                 <label for="field_terms">I accept the <u>Terms and Conditions</u></label>
            </p>
+           
+           <p data-bind-class="{'is-info':'condition', 'is-warning':'!condition'}" class="notification is-spaced">Show this message when the checkbox is checked</p>
            
            <p data-bind-model="date" data-bind-callback="formatHTML"></p>
            <input type="date" name="date" />

@@ -101,5 +101,14 @@ class Model extends BaseModel {
        return Promise.resolve()
    }
    
+   
+   condition() {
+       return this.dataBindModel.terms
+   }
+   
+   isDeleted() {
+       const msg = this.dataBindModel.deleteResultMsg
+       return msg && msg.toLowerCase().indexOf('not') === -1
+   }
 
 }

@@ -18,7 +18,7 @@ class SPA {
                         return this.renderContent(this.View[page])
                     })
                     .then(() => {
-                      this.bindModelText().parseEvents().twoWayInputBind().cleanNavLinks().loadingEnd()
+                      this.bindModelText().parseEvents().twoWayInputBind().parseClassState().cleanNavLinks().loadingEnd()
                     })
                     .catch(err => {
                         console.error(err)
@@ -52,7 +52,7 @@ class SPA {
 
     update(evt, funcName) {
         return this.Model[funcName](evt).then(() => {
-            return this.bindModelText().parseEvents().twoWayInputBind()
+            return this.bindModelText().parseEvents().twoWayInputBind().parseClassState()
         })
     }
 
@@ -60,6 +60,27 @@ class SPA {
         let links = [].slice.call(document.querySelector('nav').querySelectorAll('a'))
         links.forEach(link => {
             link.setAttribute('href', `${window.location.origin}${link.hash}`)
+        })
+        return this
+    }
+    
+    parseClassState() {
+        let contents = [].slice.call(this.content.querySelectorAll('*[data-bind-class]'))
+        contents.forEach(domElem => {
+            let css = {}
+            const bindClass = domElem.dataset.bindClass.replace(/'/g, '"')
+            try { css = window.JSON.parse(bindClass) 
+            } catch (e) { 
+                console.error(e) 
+                css = {}
+            }
+            Object.entries(css).forEach(([className, funcName]) => {
+                const negation = funcName.indexOf('!') > -1
+                funcName = funcName.replace(/!|\s/g, '')
+                let add = this.Model[funcName]()
+                if (negation) add = !add
+                domElem.classList[add ? 'add' : 'remove'](className)
+            });
         })
         return this
     }
@@ -110,7 +131,7 @@ class SPA {
             
             const selector = `*[data-bind-model="${property}"]`
             let val, safeVal
-            const useSafeHTML = domElem.dataset.hasOwnProperty('safe')
+            const useSafeHTML = domElem.dataset.hasOwnProperty('bindSafe')
 
             if (obj.hasOwnProperty(property) && obj[property] !== undefined) {
                 val = obj[property]
@@ -120,10 +141,9 @@ class SPA {
                 else if ('value' in domElem) domElem.value = useSafeHTML ? safeVal : val
                 else if ('innerHTML' in domElem) domElem.innerHTML = useSafeHTML ? safeVal : val
             }
-            if (!domElem.matches('input, select, textarea') && domElem.dataset.hasOwnProperty('bindModel'))
-                if (!domElem.innerHTML.length) domElem.dataset.bindDisplay = 'hidden'
-                else domElem.dataset.bindDisplay = 'visible'  
-            if( domElem.dataset.hasOwnProperty('bindCallback')) this.update(domElem, domElem.dataset.bindCallback)
+            if (!domElem.matches('input, select, textarea'))
+                domElem.dataset.bindDisplay = domElem.innerHTML.length ? 'visible' : 'hidden'
+            if( domElem.dataset.hasOwnProperty('bindCallback')) this.update(domElem, domElem.dataset.bindCallback)            
             Object.defineProperty(obj, property, {
                 get: () => { return val },
                 set: (newValue) => {
@@ -131,16 +151,16 @@ class SPA {
                     val = newValue
                     safeVal = this.Model.escapeHTML(val)
                     elems.forEach(elem => {
-                        const useSafeHTML = elem.dataset.hasOwnProperty('safe')
+                        const useSafeHTML = elem.dataset.hasOwnProperty('bindSafe')
                         if( elem.type === 'radio' ) elem.checked = elem.value === val
                         else if( elem.type === 'checkbox' ) elem.checked = val
                         else if ('value' in elem) elem.value = useSafeHTML ? safeVal : val
                         else if ('innerHTML' in elem) elem.innerHTML = useSafeHTML ? safeVal : val
-                        if (!elem.matches('input, select, textarea') && elem.dataset.hasOwnProperty('bindModel'))
-                            if (!elem.innerHTML.length) elem.dataset.bindDisplay = 'hidden'
-                            else elem.dataset.bindDisplay = 'visible'     
+                        if (!elem.matches('input, select, textarea'))
+                            elem.dataset.bindDisplay = elem.innerHTML.length ? 'visible' : 'hidden'     
                         if( elem.dataset.hasOwnProperty('bindCallback')) this.update(elem, elem.dataset.bindCallback)
                     })
+                    this.parseClassState()
                 },
                 configurable: true
             })

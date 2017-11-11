@@ -30,12 +30,12 @@
 }
 
 
-*[data-bind-display=hidden] {    
+*[data-bind-display=hidden]:not(input):not(select):not(textarea) {    
     opacity: 0;
     transition: opacity 0.3s, visibility 0.3s;
     visibility: hidden;
 }
-*[data-bind-display=visible] {    
+*[data-bind-display=visible]:not(input):not(select):not(textarea) {    
     opacity: 1;
     transition: opacity 0.3s, visibility 0.3s;
     visibility: visible;

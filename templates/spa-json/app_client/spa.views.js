@@ -6,7 +6,7 @@ class View {
                         <h1 class="title">Todo Crud Sample</h1>
                     </div>
                 </section>
-                <p data-bind-model="deleteResultMsg" data-safe data-bindcss="{fail: 'classname', pass: 'classname'}" class="notification is-warning is-spaced"></p>              
+                <p data-bind-model="deleteResultMsg" data-bind-safe data-bind-class="{'is-success': 'isDeleted', 'is-danger': '!isDeleted' }" class="notification is-spaced"></p>              
                 <table class="table is-spaced is-bordered is-hoverable is-fullwidth is-small">
                   <thead>
                     <tr class="is-selected">
@@ -44,7 +44,7 @@ class View {
                         <input type="reset" value="reset" />
                         <input type="button" value="submit" class="button is-link" data-bind-event="click:saveTodo" /> 
                     </div>
-                    <p data-bind-model="saveResultMsg" data-safe class="notification is-warning"></p>
+                    <p data-bind-model="saveResultMsg" data-bind-safe class="notification is-warning"></p>
                 </form>`)
     }
 
@@ -69,7 +69,7 @@ class View {
                     <div class="field">
                         <input type="button" value="submit" data-bind-event="click:updateTodo" class="button is-link" />
                     </div>
-                    <p data-bind-model="updateResultMsg" data-safe class="notification is-warning is-spaced"></p>
+                    <p data-bind-model="updateResultMsg" data-bind-safe class="notification is-warning is-spaced"></p>
                 </form>`)
     }
     
