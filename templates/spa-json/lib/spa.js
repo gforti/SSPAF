@@ -74,10 +74,10 @@ class SPA {
                 console.error(e) 
                 css = {}
             }
-            Object.entries(css).forEach(([className, funcName]) => {
-                const negation = funcName.indexOf('!') > -1
-                funcName = funcName.replace(/!|\s/g, '')
-                let add = this.Model[funcName]
+            Object.entries(css).forEach(([className, condition]) => {
+                const negation = condition.indexOf('!') > -1
+                condition = condition.replace(/!|\s/g, '')
+                let add = this.Model[condition]
                 if (negation) add = !add
                 domElem.classList[add ? 'add' : 'remove'](className)                
             });

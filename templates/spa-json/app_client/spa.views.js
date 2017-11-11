@@ -44,7 +44,7 @@ class View {
                         <input type="reset" value="reset" />
                         <input type="button" value="submit" class="button is-link" data-bind-event="click:saveTodo" /> 
                     </div>
-                    <p data-bind-model="saveResultMsg" data-bind-safe class="notification is-warning"></p>
+                    <p data-bind-model="saveResultMsg" data-bind-safe data-bind-class="{'is-success': 'isAdded', 'is-danger': '!isAdded' }" class="notification"></p>
                 </form>`)
     }
 
@@ -69,7 +69,7 @@ class View {
                     <div class="field">
                         <input type="button" value="submit" data-bind-event="click:updateTodo" class="button is-link" />
                     </div>
-                    <p data-bind-model="updateResultMsg" data-bind-safe class="notification is-warning is-spaced"></p>
+                    <p data-bind-model="updateResultMsg" data-bind-safe data-bind-class="{'is-success': 'isUpdated', 'is-danger': '!isUpdated' }" class="notification is-spaced"></p>
                 </form>`)
     }
     

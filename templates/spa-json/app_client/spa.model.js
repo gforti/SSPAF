@@ -86,5 +86,15 @@ class Model extends BaseModel {
        const msg = this.dataBindModel.deleteResultMsg
        return msg && msg.toLowerCase().indexOf('not') === -1
    }
+   
+   get isAdded() {
+       const msg = this.dataBindModel.saveResultMsg
+       return msg && msg.toLowerCase().indexOf('not') === -1 && msg.toLowerCase().indexOf('required') === -1
+   }
+   
+   get isUpdated() {
+       const msg = this.dataBindModel.updateResultMsg
+       return msg && msg.toLowerCase().indexOf('not') === -1 && msg.toLowerCase().indexOf('required') === -1
+   }
 
 }
