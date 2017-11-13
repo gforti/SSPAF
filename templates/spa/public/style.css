@@ -63,14 +63,14 @@ body#home > nav > a[href$="home"]
 }
 
 input:required:invalid, 
-select:required:invalid
+select:required:invalid,
 textarea:required:invalid
 {
   border: 1px solid red;
 }
 
 input:required:valid, 
-select:required:valid
+select:required:valid,
 textarea:required:valid
 {
   border: 1px solid green;
