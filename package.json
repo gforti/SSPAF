@@ -2,7 +2,7 @@
   "name": "sspaf",
   "description": "Simple Single Page Application Framework",
   "author": "Gabriel Forti <gnforti@gmail.com>",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT",
   "keywords": [
     "app",
