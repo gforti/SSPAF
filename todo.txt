@@ -1,0 +1,7 @@
+Things to do:
+Controller to determine page view
+Look into components
+CSS bind to pass in current element?
+Fix demos
+Table Sort
+What should happen on Controller Promise fail?
