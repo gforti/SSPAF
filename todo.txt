@@ -5,3 +5,4 @@ CSS bind to pass in current element?
 Fix demos
 Table Sort
 What should happen on Controller Promise fail?
+Drop downs with an option that is not empty should auto bind value when binding is getting ready.

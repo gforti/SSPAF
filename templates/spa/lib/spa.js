@@ -88,13 +88,15 @@ class SPA {
 
     parseEvents() {
         let contents = [].slice.call(this.content.querySelectorAll('*[data-bind-event]'))
-        contents.forEach(domElem => {
-            const [evtName, funcName] = domElem.dataset.bindEvent.split(':')
-            domElem.addEventListener(evtName, evt => {
-                return this.update(evt, funcName)
+        contents
+            .filter(field => field.dataset.bindEventReady !== 'true')
+            .forEach(domElem => {
+                domElem.dataset.bindEventReady = 'true'
+                const [evtName, funcName] = domElem.dataset.bindEvent.split(':')
+                domElem.addEventListener(evtName, evt => {
+                    return this.update(evt, funcName)
+                })
             })
-            delete domElem.dataset.bindEvent
-        })
         return this
     }
 
